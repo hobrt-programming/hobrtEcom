@@ -179,7 +179,7 @@ if(isset($_GET['step']) && $_GET['step'] == 1)
 		$mysqli -> set_charset("utf8");
 		$mysqli -> query("
 INSERT INTO `settings` (`title`, `googlea`, `fbpixel`, `color`, `descr`, `header`, `teles`, `whs`, `messangers`, `logo`) VALUES
-('$user', '', '', '', '', '212696170986 - contact@hobrt.me', '0696170986;0771736870', '0696170986;0771736870', 'hobrt', '4ba6814e26a47e6e8e349de75eaace85.png');") or die($mysqli->error);
+('$user', '', '', '', '', '212771736870 - contact@hobrt.me', '0771736870', '0771736870', 'hobrt', '4ba6814e26a47e6e8e349de75eaace85.png');") or die($mysqli->error);
 		echo "تم التثبيث بنجاح الرجاء حدف مجلد install .";
 	}else{
 	?>
