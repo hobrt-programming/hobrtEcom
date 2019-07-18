@@ -133,23 +133,9 @@ $(".lx-purchase-btns-floating a").on("click",function(){
 			q : q
 		},
 		success : function(response){
-			//fbq('track', 'AddToCart');
+			if(fbq != undefined)
+				fbq('track', 'AddToCart');
 			window.location.href = base_url + "cart";
-			/*$(".lx-add-to-cart").html('أطلب الآن');
-			$(".lx-order").css("display","flex");
-			if($(".lx-header-cart span").length){
-				$(".lx-header-cart a span").text(response);
-			}
-			else{
-				$(".lx-header-cart a").append('<span>'+response+'</span>');
-			}
-			$(".lx-floating-response").remove();
-			window.clearTimeout(timer);
-			$("body").append('<div class="lx-floating-response"><p class="lx-succes"><i class="material-icons">check</i> تمت الإضافة إلى السلة<i class="material-icons">close</i></p></div>');
-			$(".lx-floating-response").fadeIn();
-			timer = window.setTimeout(function(){
-				$(".lx-floating-response").fadeOut();
-			},5000);*/
 		}		
 	});		
 });
@@ -168,23 +154,9 @@ $(".lx-add-to-cart").on("click",function(){
 			q : q
 		},
 		success : function(response){
-			fbq('track', 'AddToCart');
+			if(fbq != undefined)
+				fbq('track', 'AddToCart');
 			window.location.href = base_url + "cart";
-			/*$(".lx-add-to-cart").html('أطلب الآن');
-			$(".lx-order").css("display","flex");
-			if($(".lx-header-cart span").length){
-				$(".lx-header-cart a span").text(response);
-			}
-			else{
-				$(".lx-header-cart a").append('<span>'+response+'</span>');
-			}
-			$(".lx-floating-response").remove();
-			window.clearTimeout(timer);
-			$("body").append('<div class="lx-floating-response"><p class="lx-succes"><i class="material-icons">check</i> تمت الإضافة إلى السلة<i class="material-icons">close</i></p></div>');
-			$(".lx-floating-response").fadeIn();
-			timer = window.setTimeout(function(){
-				$(".lx-floating-response").fadeOut();
-			},5000);*/
 		}		
 	});		
 });
@@ -302,7 +274,8 @@ $(".lx-cart-next-step a").on("click",function(){
 		save = "noproduct";
 	}
 	if(save === "yes"){
-		fbq('track', 'Purchase', {currency: 'MAD', value: $("#value").val()});
+		if(fbq != undefined)
+			fbq('track', 'Purchase', {currency: 'MAD', value: $("#value").val()});
 		$("#sendcart").submit();
 	}
 	else if(save === "noproduct"){
