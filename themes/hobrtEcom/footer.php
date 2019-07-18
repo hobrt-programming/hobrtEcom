@@ -4,7 +4,7 @@
 				<div class="lx-footer-bottom">
 					<div class="lx-footer-bottom-content">
 						<div class="lx-copyright">
-							<p>&copy; كل الحقوق محفوظة لموقع إكس مول 2018.</p>
+							<p>&copy; كل الحقوق محفوظة hobrt.me 2018.</p>
 						</div>
 						<div class="lx-clear-fix"></div>
 					</div>

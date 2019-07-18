@@ -19,8 +19,8 @@
 		<meta name="Classification" content="Business">
 		<meta name="author" content="hobrt, hobrt.me">
 		<meta name="designer" content="hobrt lhbib">
-		<meta name="reply-to" content="lhbib95@gmail.com">
-		<meta name="owner" content="hassan bengma">
+		<meta name="reply-to" content="hobrtme@gmail.com">
+		<meta name="owner" content="hobrt.me">
 		<meta name="url" content="<?php echo base_url(); ?>">
 		<meta name="identifier-URL" content="<?php echo base_url(); ?>">
 		<meta name="og:title" content="<?php echo setting("title"); ?> - <?php echo isset($title) ? $title : "بيع جميع أنواع السلع"; ?>"/>
