@@ -1,0 +1,443 @@
+/* Import Google Fonts */
+@import 'https://fonts.googleapis.com/css?family=Material+Icons|Roboto:100,300,400,500,700,900|Droid+Arabic+Kufi|Rakkas';
+
+/* Set a unified style */
+*{
+	box-sizing:border-box;
+	margin:0px;
+	padding:0px;
+	text-decoration:none;
+	list-style:none;
+	border:0px;
+}
+body{
+	font-size:14px;
+	font-family:'Droid Arabic Kufi';
+	background:#FCFCFC;
+}
+a{
+	-webkit-transition:all ease 0.3s;
+	transition:all ease 0.3s;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+*::-webkit-scrollbar {
+    width: 10px;
+}
+*::-webkit-scrollbar-track {
+	background:#F8F8F8;
+}
+*::-webkit-scrollbar-thumb {
+	background:#929292;
+}
+
+input[type="checkbox"]{
+	visibility:hidden;
+	margin-right:5px;
+}
+input[type="radio"]{
+	visibility:hidden;
+	margin-right:5px;
+}
+label{
+	position:relative;
+}
+.lx-unchecked-box::before{
+	position:absolute;
+	content:"";
+	display:inline-block;
+	width:14px;
+	height:14px;
+	border:1px solid #858585;
+}
+.lx-checked-box::before{
+	position:absolute;
+	content:"";
+	width:14px;
+	height:14px;
+	border:1px solid #a9447c;
+}
+.lx-checked-box::after{
+	position:absolute;
+	content:"";
+	top:4px;
+	left:4px;
+	width:8px;
+	height:8px;
+	background:#a9447c;
+}
+.lx-unchecked-radio::before{
+	position:absolute;
+	content:"";
+	display:inline-block;
+	width:14px;
+	height:14px;
+	border:1px solid #858585;
+	border-radius:50%;
+}
+.lx-checked-radio::before{
+	position:absolute;
+	content:"";
+	width:14px;
+	height:14px;
+	border:1px solid #a9447c;
+	border-radius:50%;
+}
+.lx-checked-radio::after{
+	position:absolute;
+	content:"";
+	top:4px;
+	left:4px;
+	width:8px;
+	height:8px;
+	background:#a9447c;
+	border-radius:50%;
+}
+
+/* Set a clear fix */
+.lx-clear-fix{
+	clear:both;
+}
+
+/* Set the layouts */
+.lx-g1{
+	position:relative;
+	width:100%;
+	padding:15px;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g1-f{
+	position:relative;
+	width:100%;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g2{
+	float:right;
+	position:relative;
+	width:50%;
+	padding:15px;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g2-f{
+	float:right;
+	position:relative;
+	width:50%;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g3{
+	float:right;
+	position:relative;
+	width:33.33%;
+	padding:15px;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g3-f{
+	float:right;
+	position:relative;
+	width:33.33%;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g3-2{
+	float:right;
+	position:relative;
+	width:66.66%;
+	padding:15px;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g3-2-f{
+	float:right;
+	position:relative;
+	width:66.66%;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g4{
+	float:right;
+	position:relative;
+	width:25%;
+	padding:15px;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g4-f{
+	float:right;
+	position:relative;
+	width:25%;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g4-3{
+	float:right;
+	position:relative;
+	width:75%;
+	padding:15px;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g4-3-f{
+	float:right;
+	position:relative;
+	width:75%;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g5{
+	float:right;
+	position:relative;
+	width:20%;
+	padding:15px;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g5-f{
+	float:right;
+	position:relative;
+	width:20%;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g5-2{
+	float:right;
+	position:relative;
+	width:40%;
+	padding:15px;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g5-2-f{
+	float:right;
+	position:relative;
+	width:40%;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g5-3{
+	float:right;
+	position:relative;
+	width:60%;
+	padding:15px;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g5-3-f{
+	float:right;
+	position:relative;
+	width:60%;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g5-4{
+	float:right;
+	position:relative;
+	width:80%;
+	padding:15px;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g5-4-f{
+	float:right;
+	position:relative;
+	width:80%;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g6{
+	float:right;
+	position:relative;
+	width:16.66%;
+	padding:15px;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g6-f{
+	float:right;
+	position:relative;
+	width:16.66%;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g6-5{
+	float:right;
+	position:relative;
+	width:83.33%;
+	padding:15px;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g6-5-f{
+	float:right;
+	position:relative;
+	width:83.33%;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g8{
+	float:right;
+	position:relative;
+	width:12.5%;
+	padding:15px;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g8-f{
+	float:right;
+	position:relative;
+	width:12.5%;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g8-7{
+	float:right;
+	position:relative;
+	width:87.5%;
+	padding:15px;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.lx-g8-7-f{
+	float:right;
+	position:relative;
+	width:87.5%;
+	opacity:1.0;
+	-webkit-transition: all 0.8s;
+	transition: all 0.8s;
+}
+@media(max-width:768px){
+	.lx-g1{
+		width:100%;
+		padding:10px;
+	}
+	.lx-g1-f{
+		width:100%;
+	}
+	.lx-g2{
+		width:100%;
+		padding:10px;
+	}
+	.lx-g2-f{
+		width:100%;
+	}
+	.lx-g3{
+		width:100%;
+		padding:10px;
+	}
+	.lx-g3-f{
+		width:100%;
+	}
+	.lx-g3-2{
+		width:100%;
+		padding:10px;
+	}
+	.lx-g3-2-f{
+		width:100%;
+	}
+	.lx-g4{
+		width:100%;
+		padding:10px;
+	}
+	.lx-g4-f{
+		width:100%;
+	}
+	.lx-g4-3{
+		width:100%;
+		padding:10px;
+	}
+	.lx-g4-3-f{
+		width:100%;
+	}
+	.lx-g5{
+		width:100%;
+		padding:10px;
+	}
+	.lx-g5-f{
+		width:100%;
+	}
+	.lx-g5-2{
+		width:100%;
+		padding:10px;
+	}
+	.lx-g5-2-f{
+		width:100%;
+	}
+	.lx-g5-3{
+		width:100%;
+		padding:10px;
+	}
+	.lx-g5-3-f{
+		width:100%;
+	}
+	.lx-g5-4{
+		width:100%;
+		padding:10px;
+	}
+	.lx-g5-4-f{
+		width:100%;
+	}
+	.lx-g6{
+		width:100%;
+		padding:10px;
+	}
+	.lx-g6-f{
+		width:100%;
+	}
+	.lx-g6-5{
+		width:100%;
+		padding:10px;
+	}
+	.lx-g6-5-f{
+		width:100%;
+	}
+	.lx-g8{
+		width:100%;
+		padding:10px;
+	}
+	.lx-g8-f{
+		width:100%;
+	}
+	.lx-g8-7{
+		width:100%;
+		padding:10px;
+	}
+	.lx-g8-7-f{
+		width:100%;
+	}
+}
