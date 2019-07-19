@@ -133,7 +133,7 @@ $(".lx-purchase-btns-floating a").on("click",function(){
 			q : q
 		},
 		success : function(response){
-			if(fbq != undefined)
+			if(typeof fbq !== 'undefined')
 				fbq('track', 'AddToCart');
 			window.location.href = base_url + "cart";
 		}		
@@ -154,7 +154,7 @@ $(".lx-add-to-cart").on("click",function(){
 			q : q
 		},
 		success : function(response){
-			if(fbq != undefined)
+			if(typeof fbq !== 'undefined')
 				fbq('track', 'AddToCart');
 			window.location.href = base_url + "cart";
 		}		
@@ -274,7 +274,7 @@ $(".lx-cart-next-step a").on("click",function(){
 		save = "noproduct";
 	}
 	if(save === "yes"){
-		if(fbq != undefined)
+		if(typeof fbq !== 'undefined')
 			fbq('track', 'Purchase', {currency: 'MAD', value: $("#value").val()});
 		$("#sendcart").submit();
 	}
