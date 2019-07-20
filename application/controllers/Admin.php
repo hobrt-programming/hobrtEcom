@@ -64,7 +64,6 @@ class Admin extends CI_Controller
 	}
 	function add_admin()
 	{
-		admin_perm(1);
 		$data = array();
 		if(isset($_POST['test']))
 		{
