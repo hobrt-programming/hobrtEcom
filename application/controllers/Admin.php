@@ -105,7 +105,7 @@ class Admin extends CI_Controller
 				"status" => $this->input->post("status"),
 				"address" => $this->input->post("address")
 			);
-			$this->m_p->up_d("orders", $arr);
+			$this->m_p->up_d("orders", $arr, array("id" => $id));
 		}
 
 		$data['msg'] = $this->m_p->s_a("orders","id = $id",1,0);
