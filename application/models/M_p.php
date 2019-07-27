@@ -152,6 +152,19 @@ class M_p extends CI_Model
 		return $e->result();
 	}
 
+	function totalSales($id)
+	{
+		$all = $this->qe_r("SELECT * FROM orders WHERE products LIKE '%\"".$id."\"%' ");
+		//echo $this->db->last_query();
+		$totalSales = 0;
+		foreach ($all as $key) {
+			$i = json_decode($key->products, TRUE);
+			if(isset($i[$id]))
+				$totalSales+=$i[$id];
+		}
+		return $totalSales;
+	}
+
 }
 
 

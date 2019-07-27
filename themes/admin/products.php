@@ -270,7 +270,7 @@ if($tp == "add") {
 				<td data-title="إسم القسم"> <?php echo $key->title; ?></td>
 				<td data-title="إسم القسم"> <?php echo $key->price; ?></td>
 				<td data-title="إسم القسم"> <?php echo floor($key->price - ($key->price * $key->discount / 100)); ?></td>
-				<td data-title="إسم القسم"> <?php echo $this->m_p->get_num("orders", array("id" => $key->id)); ?></td>
+				<td data-title="إسم القسم"> <?php echo $this->m_p->totalSales($key->id); ?></td>
 				<td data-title="إسم القسم"> <a href="<?php echo base_url("$key->id"); ?>" target="_blanck"><?php echo $this->m_p->get_num("reviews", array("product" => $key->id)); ?></a></td>
 				<td data-title="إسم القسم"> <a href="<?php echo base_url("$key->id"); ?>" target="_blanck"><?php echo $this->m_p->get_num("reviews", array("product" => $key->id, "ac" => 0)); ?></a></td>
 				<td data-title="التحكم" class="text-center">
