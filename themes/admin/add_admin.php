@@ -40,16 +40,6 @@
 		      </div>
 		    </div>
 		    
-		    <div class="form-group" data-sr="wait 0.6s, then enter bottom and hustle 100%">
-		      <label for="inputUser" class="col-lg-2 control-label">الصلاحيات </label>
-		      <div class="col-lg-10 input-grup">
-		      	<select class="form-control" name="cas">
-		      		<option value="1">مدير</option>
-		      		<option value="2">مشرف</option>
-		      	</select>
-		      </div>
-		    </div>
-
 		    <div class="form-group" data-sr="wait 0.3s, then enter bottom and hustle 100%">
 		      <div class="col-xs-10 col-xs-pull-2">
 		        <button type="reset" class="btn btn-default">أبدء من جديد ؟</button>
