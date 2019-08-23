@@ -271,8 +271,8 @@ if($tp == "add") {
 				<td data-title="إسم القسم"> <?php echo $key->price; ?></td>
 				<td data-title="إسم القسم"> <?php echo floor($key->price - ($key->price * $key->discount / 100)); ?></td>
 				<td data-title="إسم القسم"> <?php echo $this->m_p->totalSales($key->id); ?></td>
-				<td data-title="إسم القسم"> <a href="<?php echo base_url("$key->id"); ?>" target="_blanck"><?php echo $this->m_p->get_num("reviews", array("product" => $key->id)); ?></a></td>
-				<td data-title="إسم القسم"> <a href="<?php echo base_url("$key->id"); ?>" target="_blanck"><?php echo $this->m_p->get_num("reviews", array("product" => $key->id, "ac" => 0)); ?></a></td>
+				<td data-title="إسم القسم"> <a href="<?php echo base_url("home/show/$key->id"); ?>" target="_blanck"><?php echo $this->m_p->get_num("reviews", array("product" => $key->id)); ?></a></td>
+				<td data-title="إسم القسم"> <a href="<?php echo base_url("home/show/$key->id"); ?>" target="_blanck"><?php echo $this->m_p->get_num("reviews", array("product" => $key->id, "ac" => 0)); ?></a></td>
 				<td data-title="التحكم" class="text-center">
 					<a href="<?php echo base_url("admin/edit_product/$key->id"); ?>" class="btn btn-default btn-xs"><i class="fa fa-pencil-square"></i> تعديل</a>
            			<a href="<?php echo base_url("admin/delt/products/$key->id/products"); ?>" class="btn btn-danger btn-xs"><i class="fa fa-minus-square"></i> حذف</a>
