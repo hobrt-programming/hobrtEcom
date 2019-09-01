@@ -151,7 +151,15 @@ function ad_perm()
 {
 	$ar = array(
 		1 	=> array("title" => "المنتوجات", "url" => "products"),
-		9 	=> array("title" => "الطلبات", "url" => "requests"),
+		5 	=> array("title" => "الطلبات", "options" => array(
+				array("title" => "الكل", "url" => "requests"),
+				array("title" => "بإنتظار التأكيد", "url" => "requests/1"),
+				array("title" => "بإنتظار الشحن", "url" => "requests/2"),
+				array("title" => "تم الإرسال", "url" => "requests/3"),
+				array("title" => "تم إلغاء الطلب", "url" => "requests/0"),
+				array("title" => "تم الإستلام", "url" => "requests/5")
+			)
+		),
 		10 	=> array("title" => "الخصومات" , "url" => "discounts"), //options
 		12 	=> array("title" => "الاقسام", "url" => "cat"),
 		2 	=> array("title" => "المدراء", "url" => "admins"),
@@ -159,6 +167,7 @@ function ad_perm()
 	);
 	return $ar;
 }
+
 
 
 	/**

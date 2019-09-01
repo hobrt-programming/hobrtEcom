@@ -4,7 +4,7 @@
 				<div class="lx-footer-bottom">
 					<div class="lx-footer-bottom-content">
 						<div class="lx-copyright">
-							<p>&copy; كل الحقوق محفوظة hobrt.me 2018.</p>
+							<p>&copy; كل الحقوق محفوظة <a href="https://hobrt.me" target="_blanck" style="color: #fff;">hobrt.me</a> <?php echo date("Y"); ?>.</p>
 						</div>
 						<div class="lx-clear-fix"></div>
 					</div>

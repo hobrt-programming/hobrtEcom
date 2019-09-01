@@ -81,21 +81,41 @@ class Admin extends CI_Controller
 		$this->load->view("admin/add_admin",$data);
 	}
 
-	public function requests()
+	
+
+	public function requests($tp = FALSE)
 	{
 
-		$config = $config = page_a($this->m_p->get_num("orders", array()), "admin/requests", 3, $this->config->item("per_page"));
+		if($tp === FALSE || $tp > 5)
+		{
+			$config = $config = page_a($this->m_p->get_num("orders", array()), "admin/requests", 3, $this->config->item("per_page"));
 
-		$this->pagination->initialize($config);
+			$this->pagination->initialize($config);
 
-		$page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+			$page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
 
-		$data['msg'] = $this->m_p->s_a("orders", array(), $config["per_page"], $page);
+			$data['msg'] = $this->m_p->s_a("orders", array(), $config["per_page"], $page);
+		}
+		else {
+
+			$data['tp'] = $tp;
+
+			$config = $config = page_a($this->m_p->get_num("orders", array("status" => $tp)), "admin/requests/$tp", 4, $this->config->item("per_page"));
+
+			$this->pagination->initialize($config);
+
+			$page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+
+			$data['msg'] = $this->m_p->s_a("orders", array("status" => $tp), $config["per_page"], $page);
+
+		}
 
 		$data["links"] = $this->pagination->create_links();
 
 		$this->load->view("admin/requests",$data);
 	}
+
+
 	public function detiales($id)
 	{
 		if(isset($_POST['test']))
@@ -383,6 +403,93 @@ class Admin extends CI_Controller
 		}
 	}
 
+
+	public function csv($tp = FALSE)
+	{
+
+		$filename = "orders.csv";
+
+		$delimiter = ";";
+
+		if($tp === FALSE)
+			$all = $this->m_p->sel("orders");
+		else
+			$all = $this->m_p->sel("orders", array("status" => $tp));
+
+
+		$array = array();
+
+		$array[] = array(
+			"المنتج",
+			"إسم المشتري",
+			"رقم الهاتف",
+			"المدينة",
+			"العنوان",
+			"سعر المنتج",
+			"تاريخ الطلب",
+			"الحالة",
+			"رقم التتبع"
+		);
+
+		foreach($all as $key)
+		{
+
+			$prods = "";
+
+			$pcs = json_decode($key->products, TRUE); foreach($pcs as $p => $q) { $prods.=get_info("products", $p, "title")." / العدد ".$q."\n"; }
+
+			switch ($key->status) {
+					case 1:
+						$stat = "بإنتظار التأكيد";
+						break;
+					
+					case 2:
+						$stat = "بإنتظار الشحن";
+						break;
+					
+					case 3:
+						$stat = "تم الإرسال";
+						break;
+
+					case 0:
+						$stat = "تم إلغاء الطلب";
+						break;
+
+					default:
+						$stat = "تم الإستلام";
+						break;
+				}
+
+
+			$array[] = array(
+				$prods,
+				$key->name,
+				$key->tele,
+				$key->city,
+				$key->address,
+				$key->totalPrice,
+				date("d/m/Y" ,$key->date),
+				$stat,
+				""
+			);
+		}
+
+		// open raw memory as file so no temp files needed, you might run out of memory though
+		$f = fopen('php://memory', 'w'); 
+		// loop over the input array
+		foreach ($array as $line) { 
+			// generate csv lines from the inner arrays
+			fputcsv($f, $line, $delimiter); 
+		}
+		// reset the file pointer to the start of the file
+		fseek($f, 0);
+		// tell the browser it's going to be a csv file
+		header('Content-Type: application/csv');
+		// tell the browser we want to save it instead of displaying it
+		header('Content-Disposition: attachment; filename="'.$filename.'";');
+		// make php send the generated csv lines to the browser
+		fpassthru($f);
+	}
 
 	/*****************************************************
 		   *            **	       *        

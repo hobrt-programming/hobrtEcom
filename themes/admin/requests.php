@@ -64,4 +64,10 @@
 
 	<div class="center"><?php echo $links; ?></div>
 
+	
+	<div class="col-md-12">
+		<a href="<?php echo isset($tp) ? base_url("admin/csv/$tp") : base_url("admin/csv"); ?>" class="btn btn-success">تحميل الكل</a>
+	</div>
+
+
 <?php require_once 'views/sidebar.php'; require_once 'views/foot.php';

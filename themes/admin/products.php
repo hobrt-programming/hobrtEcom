@@ -255,10 +255,10 @@ if($tp == "add") {
 			<tr>
 				<th width="2%">#</th>
 				<th width="15%" class="text-right">عنوان النتوج</th>
-				<th width="15%" class="text-right">السعر الأصلي</th>
-				<th width="15%" class="text-right">السعر بعد التخفيض</th>
-				<th width="15%" class="text-right">عدد المبيعات</th>
-				<th width="15%" class="text-right">عدد التقييمات</th>
+				<th width="10%" class="text-right">السعر الأصلي</th>
+				<th width="10%" class="text-right">السعر بعد التخفيض</th>
+				<th width="10%" class="text-right">عدد المبيعات</th>
+				<th width="10%" class="text-right">عدد التقييمات</th>
 				<th width="15%" class="text-right">عدد التقييمات بإنتظار التأكيد</th>
 				<th width="60%" class="text-right">التحكم</th>
 			</tr>
