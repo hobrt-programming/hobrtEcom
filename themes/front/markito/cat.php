@@ -12,14 +12,14 @@
 			<div class="col-lg-9 order-lg-last order-md-first">
 				<div class="shop-filter">
 					<ul class="nav nav-tabs title-bottom-spacing">
-						<a><?= lang("lang_h87") ?></a>
+						<li class="sort-by"><label for="order"><?= lang("lang_h87") ?></label>
 						<select id="order" name="order">
 							<option value="date" <?= $this->input->get("order") == "date" ? "selected" : "" ?>><?= lang("lang_h88") ?></option>
 							<option value="price_low" <?= $this->input->get("order") == "price_low" ? "selected" : "" ?>><?= lang("lang_h89") ?></option>
 							<option value="price_high" <?= $this->input->get("order") == "price_high" ? "selected" : "" ?>><?= lang("lang_h90") ?></option>
-						</select>
-						<li><a data-toggle="tab" href="#grid" class="active"><i class="flaticon-grid"></i></a></li>
-						<li><a data-toggle="tab" href="#list"><i class="flaticon-list-1"></i></a></li>
+						</select></li>
+						<li><a data-toggle="tab" href="#grid" class="active" aria-label="Grid"><i class="flaticon-grid" aria-hidden="true"></i></a></li>
+						<li><a data-toggle="tab" href="#list" aria-label="List"><i class="flaticon-list-1" aria-hidden="true"></i></a></li>
 					</ul>
 					<div class="tab-content">
 						<!--Grid-->
@@ -42,7 +42,7 @@
 			<!--side-bar-->
 			<div class="col-lg-3 order-lg-first order-md-last">
 				<div class="sidebar-Categories">
-					<h5><?= lang("lang_h66") ?></h5>
+					<h2 class="h5"><?= lang("lang_h66") ?></h2>
 					<div id="accordion" class="">
 						<?php foreach (all_categories() as $cat) : ?>
 							<a href="<?= base_url("shop?cat=$cat->id") ?>" class="list-group-item list-group-item-action border-0"><span><?= $cat->title ?></span></a>

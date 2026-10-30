@@ -5,7 +5,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="d-flex align-items-center mt-5 mb-5">
-					<img class="rounded-circle shadow-sm mr-2" src="<?= $image !== null && $image != "" ? base_url("images/" . $image) : base_url("assets/img/default_image.jpg") ?>" style="width:100px;height:100px;flex: none;" />
+					<img class="rounded-circle shadow-sm mr-2" alt="" width="100" height="100" src="<?= $image !== null && $image != "" ? base_url("images/" . $image) : base_url("assets/img/default_image.jpg") ?>" style="width:100px;height:100px;flex: none;" />
 					<div style="flex:1 1 auto">
 						<h3><?= $title ?></h3>
 						<?php if(isset($description))?><p class="m-0 d-none d-md-block"><?= $description ?></p>

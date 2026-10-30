@@ -75,6 +75,11 @@ $(function() {
 		enableDrag: false,
 		currentPagerPosition:'left',
 		onSliderLoad: function(el) {
+			// lightSlider builds its arrows and thumbnails without names: give them some
+			var outer = el.closest('.lSSlideOuter'), rtl = $('body').attr('dir') === 'rtl';
+			outer.find('.lSPager img').attr('alt', el.find('img').first().attr('alt') || '');
+			outer.find('.lSPrev').attr({ role: 'button', tabindex: 0, 'aria-label': rtl ? 'السابق' : 'Previous' });
+			outer.find('.lSNext').attr({ role: 'button', tabindex: 0, 'aria-label': rtl ? 'التالي' : 'Next' });
 			el.lightGallery({
 				selector: '#imageGallery .lslide',
 				rotate: false,

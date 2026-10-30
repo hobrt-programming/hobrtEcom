@@ -7,7 +7,7 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/css/lightslider.min.css" integrity="sha512-yJHCxhu8pTR7P2UgXFrHvLMniOAL5ET1f5Cj+/dzl+JIlGTh5Cz+IeklcXzMavKvXP8vXqKMQyZjscjf3ZDfGA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.10.0/css/lightgallery.min.css" integrity="sha512-gk6oCFFexhboh5r/6fov3zqTCA2plJ+uIoUx941tQSFg6TNYahuvh1esZVV0kkK+i5Kl74jPmNJTTaHAovWIhw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<?= $late_css("https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.10.0/css/lightgallery.min.css", ' integrity="sha512-gk6oCFFexhboh5r/6fov3zqTCA2plJ+uIoUx941tQSFg6TNYahuvh1esZVV0kkK+i5Kl74jPmNJTTaHAovWIhw==" crossorigin="anonymous" referrerpolicy="no-referrer"') ?>
 
 <style>
 	.px-4-5 {
@@ -40,7 +40,6 @@
 	}
 
 	.custom-variants-style input[type="radio"]:checked+label {
-		background: #f05036;
 		color: #fff;
 	}
 
@@ -56,19 +55,19 @@
 		<div class="row">
 			<div class="col-lg-6 col-md-6 px-4-5">
 				<!-- lightSlider only lays out left-to-right: keep the gallery LTR on Arabic pages -->
-				<div class="row wow fadeInUp" dir="ltr" data-wow-delay=".25s" data-wow-duration="1s" data-wow-iteration="1">
+				<div class="row" dir="ltr">
 					<ul id="imageGallery">
 						<?php $images = explode(",", $product->images);
 						if ($product->images !== null && $product->images != "" && sizeof($images) > 0)
-							foreach ($images as $img) { ?>
+							foreach ($images as $n => $img) { ?>
 							<li data-thumb="<?php echo base_url("uploads") . "/" . add_thumb($img, "_s") ?>" data-src="<?php echo base_url("uploads/" . $img) ?>">
-								<img src="<?php echo base_url("uploads") . "/" . add_thumb($img, "_m") ?>" />
+								<img src="<?php echo base_url("uploads") . "/" . add_thumb($img, "_m") ?>" width="400" height="400" alt="<?= html_escape($product->title) ?>" <?= $n === 0 ? 'fetchpriority="high"' : 'loading="lazy"' ?> />
 							</li>
 
 						<?php }
 						else { ?>
 							<li data-thumb="<?= base_url("assets/img/default_product.png") ?>" data-src="<?= base_url("assets/img/default_product.png") ?>">
-								<img src="<?= base_url("assets/img/default_product.png") ?>" />
+								<img src="<?= base_url("assets/img/default_product.png") ?>" alt="<?= html_escape($product->title) ?>" />
 							</li>
 						<?php } ?>
 
@@ -79,7 +78,7 @@
 			<!--product-detail-->
 			<div class="col-lg-6 col-md-6">
 				<div class="product-detail">
-					<h5><?php echo $product->title; ?></h5>
+					<h1><?php echo $product->title; ?></h1>
 					<p><?= lang("lang_h69") ?> - <?php echo get_info('cats', $product->cat, 'title'); ?></p>
 					<div class="Start">
 						<ul class="item-rating">
@@ -105,7 +104,7 @@
 						</ul>
 					</div>
 					<div class="product-detail-price">
-						<h3><?php echo format_money($product->price - ($product->price * $product->discount / 100)); ?> <?php if ($product->discount > 0) : ?><span><?php echo format_money($product->price); ?></span> <?php endif; ?> </h3>
+						<div class="h3"><?php echo format_money($product->price - ($product->price * $product->discount / 100)); ?> <?php if ($product->discount > 0) : ?><span><?php echo format_money($product->price); ?></span> <?php endif; ?> </div>
 					</div>
 					<div class="stock">
 						<p><?= lang("lang_h70") ?> : <span><?= lang("lang_h71") ?></span></p>
@@ -155,9 +154,9 @@
 							<div class="product_quantity" style="margin-right: 20px;">
 								<div class="quanty_form">
 									<div class="product-quantity d-flex">
-										<button type="button" class="sub subQty">-</button>
-										<input type="text" value="1" name="qty" />
-										<button type="button" class="add addQty">+</button>
+										<button type="button" class="sub subQty" aria-label="-1">-</button>
+										<input type="text" value="1" name="qty" inputmode="numeric" aria-label="<?= $rtl ? "الكمية" : "Quantity" ?>" />
+										<button type="button" class="add addQty" aria-label="+1">+</button>
 									</div>
 								</div>
 							</div>
@@ -175,13 +174,13 @@
 </section>
 <section class="pt-4 ">
 	<div class="container border-bottom pb-4">
-		<h4><?= lang("lang_h73") ?></h4>
+		<h2 class="section-title-sm"><?= lang("lang_h73") ?></h2>
 		<?php echo $product->descr; ?>
 	</div>
 </section>
 <section class="pt-4">
 	<div class="container pb-4">
-		<h4><?= count(($reviews)) ?> <?= lang("lang_h74") ?></h4>
+		<h2 class="section-title-sm"><?= count(($reviews)) ?> <?= lang("lang_h74") ?></h2>
 		<?php if (empty($reviews)) : ?>
 			<div class="col-md-12">
 				<div class="alert alert-info" role="alert">
@@ -197,10 +196,10 @@
 
 								<div class="d-flex align-items-center">
 									<div class="mr-3">
-										<img src="images/person.png" style="width: 40px; height:40px" alt="Profile Image" class="rounded-circle border" width="50">
+										<img src="images/person.png" style="width: 40px; height:40px" alt="" class="rounded-circle border" width="40" height="40" loading="lazy">
 									</div>
 									<div class="d-flex flex-column">
-										<h5 class="card-title mb-0"><?= html_escape($review->name) ?></h5>
+										<h3 class="h5 card-title mb-0"><?= html_escape($review->name) ?></h3>
 										<div>
 											<span class="text-warning stars">
 												<?php
@@ -214,7 +213,7 @@
 								</div>
 								<p class="card-text"><?= $review->comment !== null && $review->comment != "" ? nl2br(html_escape($review->comment)) :lang("lang_h76") ?></p>
 								<?php if($review->img !== null && $review->img != "") { ?>
-									<img class="img-thumbnail" src="<?= base_url("images/" . rawurlencode((string) $review->img)) ?>" style="width: 100%; height:auto" />
+									<img class="img-thumbnail" src="<?= base_url("images/" . rawurlencode((string) $review->img)) ?>" style="width: 100%; height:auto" loading="lazy" alt="<?= html_escape($review->name) ?>" />
 								<?php } ?>
 							</div>
 						</div>
@@ -225,8 +224,8 @@
 		<div id="already-reviewed" class="container" style="display: none;">
 		<div class="alert alert-warning" role="alert"><span><strong><?= lang("lang_h77") ?></div>
 		</div>
-		<button id="review-action" type="button" class="btn mt-3" data-toggle="modal" data-target="#reviewModal" style="background-color: <?= setting("color") ?>;color:white">
-			<i class="fas fa-plus-circle"></i> <?= lang("lang_h78") ?>
+		<button id="review-action" type="button" class="btn mt-3" data-toggle="modal" data-target="#reviewModal" style="background-color: <?= $color ?>;color:white">
+			<i class="fas fa-plus-circle" aria-hidden="true"></i> <?= lang("lang_h78") ?>
 		</button>
 	</div>
 </section>
@@ -296,7 +295,7 @@ if ($p_count > 0) { ?>
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
-					<h3 class="title"><?= lang("lang_h10"); ?></h3>
+					<h2 class="title"><?= lang("lang_h10"); ?></h2>
 					<div class="saprater title-bottom-spacing">
 						<ul>
 							<li class="saprater-box"></li>

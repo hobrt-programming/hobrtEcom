@@ -1,40 +1,73 @@
-<?php $rtl = lang("lang_h40") === "ar"; ?>
+<?php
+$rtl = lang("lang_h40") === "ar";
+
+if (!function_exists('markito_readable')) {
+	/**
+	 * The store colour, darkened just enough for white text on it (and it as
+	 * text on white) to reach the WCAG contrast ratio of 4.5:1.
+	 */
+	function markito_readable($hex)
+	{
+		if (!preg_match('/^#?([0-9a-f]{6})$/i', trim((string) $hex), $m))
+			return '#c0392b';
+		$rgb = array_map('hexdec', str_split($m[1], 2));
+		$lum = function ($c) {
+			$c = array_map(function ($v) {
+				$v /= 255;
+				return $v <= 0.03928 ? $v / 12.92 : pow(($v + 0.055) / 1.055, 2.4);
+			}, $c);
+			return 0.2126 * $c[0] + 0.7152 * $c[1] + 0.0722 * $c[2];
+		};
+		while (1.05 / ($lum($rgb) + 0.05) < 4.5)
+			$rgb = array_map(function ($v) { return (int) floor($v * 0.92); }, $rgb);
+		return vsprintf('#%02x%02x%02x', $rgb);
+	}
+}
+$color = markito_readable(setting("color"));
+
+$logo_file = FCPATH . (setting("logo") ? "images/" . setting("logo") : "assets/img/logo.png");
+$logo_size = is_file($logo_file) && ($size = @getimagesize($logo_file)) ? 'width="' . round($size[0] * 55 / max(1, $size[1])) . '" height="55"' : '';
+
+// the page's own title and summary for search results and link previews
+$page_title = isset($title) ? $title : (isset($product) ? $product->title . " | " . setting("title") : setting("title"));
+$page_descr = isset($product) ? ($product->description ?: $product->descr) : (isset($page) && isset($page->content) ? $page->content : setting("descr"));
+$page_descr = trim(preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags((string) $page_descr), ENT_QUOTES, 'UTF-8')));
+if ($page_descr === '')
+	$page_descr = setting("title");
+$page_descr = mb_strimwidth($page_descr, 0, 160, '…', 'UTF-8');
+$page_image = isset($product) && $product->images ? base_url("uploads/" . add_thumb($product->images, "")) : store_logo();
+
+// loads a stylesheet without blocking the first paint (for styles of things below the fold or opened later)
+$late_css = function ($href, $attrs = '') {
+	return '<link rel="preload" as="style" href="' . $href . '"' . $attrs . ' onload="this.onload=null;this.rel=\'stylesheet\'"><noscript><link rel="stylesheet" href="' . $href . '"' . $attrs . '></noscript>';
+};
+?>
 <!DOCTYPE html>
 <html lang="<?= lang("lang_h40") ?>" dir="<?= $rtl ? "rtl" : "ltr" ?>">
-
-<!-- Mirrored from weblizar.com/demo/html/markito/ by HTTraQt Website Copier/1.x [Karbofos 2012-2017] Fri, 11 Mar 2022 01:30:20 GMT -->
 
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title><?php echo isset($title) ? $title : setting("title"); ?></title>
+	<title><?= html_escape($page_title) ?></title>
 
 	<base href="<?php echo base_url("themes/front/markito/"); ?>">
 
-	<!--bootstrap.min.css-->
-	<?php if ($rtl) : ?>
-		<link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.5.3/css/bootstrap.min.css" integrity="sha384-JvExCACAZcHNJEc7156QaHXTnQL3hQBixvj5RV5buE7vgnNEzzskDtx9NQ4p6BJe" crossorigin="anonymous">
-	<?php else : ?>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
-	<?php endif; ?>
-	<!--animate.css-->
-	<link rel="stylesheet" href="css/animate.min.css">
+	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+	<!-- the text font (Changa, in style.css) for the store's language, before the CSS asks for it -->
+	<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/changa-300-<?= $rtl ? "arabic" : "latin" ?>.woff2">
+
+	<!-- Bootstrap 4.5.3 and slick 1.8.1 are served from the theme: no extra connections before the first paint -->
+	<link rel="stylesheet" href="css/<?= $rtl ? "bootstrap-rtl.min.css" : "bootstrap.min.css" ?>">
 	<!--fontawesome 5-->
-	<link rel="stylesheet" href="css/all.min.css">
-	<!--slicknav.css-->
-	<link rel="stylesheet" href="css/slicknav.min.css">
+	<link rel="stylesheet" href="css/all.min.css?v=<?= filemtime(__DIR__ . "/css/all.min.css") ?>">
 	<!--slickslider.css-->
-
-
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" />
-
+	<link rel="stylesheet" href="css/slick.min.css">
 	<link rel="stylesheet" href="css/slick-theme.css?v=<?= filemtime(__DIR__ . "/css/slick-theme.css") ?>">
-
-	<!-- lity.css -->
-	<link rel="stylesheet" href="css/lity.min.css">
-	<!-- flaticon.css -->
-	<link rel="stylesheet" href="fonts/flaticon.css">
+	<!-- animations, mobile menu, lightbox and icon font: not needed for the first paint -->
+	<?= $late_css("css/animate.min.css") ?>
+	<?= $late_css("css/slicknav.min.css") ?>
+	<?= $late_css("css/lity.min.css") ?>
+	<?= $late_css("fonts/flaticon.css") ?>
 	<!--Fav-icon-->
 	<link rel="shortcut icon" href="images/fav-icon.png" type="image/x-icon">
 	<!-- Custom.css -->
@@ -42,12 +75,6 @@
 	<link rel="stylesheet" href="css/responsive.css?v=<?= filemtime(__DIR__ . "/css/responsive.css") ?>">
 	<link rel="stylesheet" href="css/hero.css?v=<?= filemtime(__DIR__ . "/css/hero.css") ?>">
 	<?php if ($rtl) : ?><link rel="stylesheet" href="css/rtl.css?v=<?= filemtime(__DIR__ . "/css/rtl.css") ?>"><?php endif; ?>
-	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-	  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-	  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-	<![endif]-->
 
 
 	<script type="text/javascript">
@@ -59,25 +86,17 @@
 		var Currency = <?= json_encode($currency, JSON_UNESCAPED_UNICODE) ?>;
 	</script>
 
-	<meta name="description" content="<?php echo setting("descr"); ?>">
-	<meta name="keywords" content="xmall,hmizat,avito,jumia,online shopping,">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="subject" content="e-commerce">
-	<meta name="language" content="AR">
-	<meta name="robots" content="index,follow" />
-	<meta name="Classification" content="Business">
+	<meta name="description" content="<?= html_escape($page_descr) ?>">
+	<meta name="robots" content="index,follow">
 	<meta name="author" content="hobrt, hobrt.me">
-	<meta name="designer" content="hobrt lhbib">
-	<meta name="reply-to" content="hobrtme@gmail.com">
-	<meta name="owner" content="hobrt.me">
-	<meta name="url" content="<?php echo base_url(); ?>">
-	<meta name="identifier-URL" content="<?php echo base_url(); ?>">
-	<meta name="og:title" content="<?php echo isset($title) ? $title : setting("title"); ?>" />
-	<meta name="og:type" content="e-commerce" />
-	<meta name="og:url" content="<?php echo base_url() ?>" />
-	<meta name="og:image" content="uploads/large_" />
-	<meta name="og:site_name" content="<?php echo setting("title"); ?>" />
-	<meta name="og:description" content="<?php echo setting("descr"); ?>" />
+	<link rel="canonical" href="<?= html_escape(current_url()) ?>">
+	<meta property="og:title" content="<?= html_escape($page_title) ?>">
+	<meta property="og:type" content="<?= isset($product) ? "product" : "website" ?>">
+	<meta property="og:url" content="<?= html_escape(current_url()) ?>">
+	<meta property="og:image" content="<?= html_escape($page_image) ?>">
+	<meta property="og:site_name" content="<?= html_escape(setting("title")) ?>">
+	<meta property="og:description" content="<?= html_escape($page_descr) ?>">
+	<meta name="twitter:card" content="summary_large_image">
 
 
 	<?php if (isset($code_header)) : ?>
@@ -140,26 +159,30 @@
 		button.contact-btn,
 		a.cart>span,
 		.p-button a {
-			background: <?= setting("color") ?>
+			background: <?= $color ?>
 		}
 
 		a.add-to-cart {
-			background: <?= setting("color") ?> !important;
-			border-color: <?= setting("color") ?> !important;
+			background: <?= $color ?> !important;
+			border-color: <?= $color ?> !important;
 		}
 
 		.navbar-light .navbar-nav .active>.nav-link,
 		.navbar-light .navbar-nav .nav-link:focus,
 		.navbar-light .navbar-nav .nav-link:hover {
-			color: <?= setting("color") ?>
+			color: <?= $color ?>
 		}
 
 		.navbar-light .navbar-nav a.nav-link:after {
-			border-bottom-color: <?= setting("color") ?>
+			border-bottom-color: <?= $color ?>
 		}
 
-		.offer-banner-content a, .product-detail-price h3, .stock p span {
-			color: <?= setting("color") ?>
+		.offer-banner-content a, .product-detail-price .h3, .stock p span {
+			color: <?= $color ?>
+		}
+
+		.custom-variants-style input[type="radio"]:checked+label {
+			background: <?= $color ?>;
 		}
 
 		.price-discount {
@@ -179,30 +202,22 @@
 		}
 
 		.page-item:last-child .page-link {
-			background: <?= setting("color") ?> !important;
-		}
-
-		#preloader {
-			background: <?= setting("color") ?>;
+			background: <?= $color ?> !important;
 		}
 	</style>
 </head>
 
 <body class="<?= $rtl ? "rtl" : "ltr" ?>" dir="<?= $rtl ? "rtl" : "ltr" ?>">
-	<!-- Preloader -->
-	<div id="preloader" style="display: flex;" class="align-items-center justify-content-center">
-		<img class="pulse animated infinite" style="height: 50px; width:auto!important" src="<?= store_logo() ?>" />
-	</div>
 	<!-- Start-Header-Section -->
 	<!-- Menu-start-area -->
 	<header>
 		<!--Nav-Bar-->
 		<?php if (setting("header") !== null && setting("header") != "") { ?>
-			<div class="topbar" style="background:<?= setting("color") ?>!important">
+			<div class="topbar" style="background:<?= $color ?>!important">
 				<div class="container">
 					<div class="row">
 						<div class="top-content text-center">
-							<h6 class="text-white"><?= setting("header"); ?></h6>
+							<p class="h6 text-white mb-0"><?= setting("header"); ?></p>
 						</div>
 					</div>
 				</div>
@@ -214,7 +229,7 @@
 				<div class="row">
 					<div class="d-none col-lg-2 col-md-12 col-sm-12 d-lg-flex align-items-center">
 						<div class="nav-brand">
-							<a href="<?= base_url("/") ?>"><img src="<?= store_logo() ?>" style="height:55px" alt="logo.png" class="logo"></a>
+							<a href="<?= base_url("/") ?>"><img src="<?= store_logo() ?>" style="height:55px;width:auto" <?= $logo_size ?> alt="<?= html_escape(setting("title")) ?>" class="logo"></a>
 						</div>
 					</div>
 					<div class="col-lg-8">
@@ -228,7 +243,7 @@
 										<a class="nav-link scroll" href="<?= base_url("home/products") ?>"><?= lang("lang_h65") ?></a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link scroll"><?= lang("lang_h66") ?></a>
+										<a class="nav-link scroll" href="<?= base_url("home/products") ?>"><?= lang("lang_h66") ?></a>
 										<ul class="dropdown">
 											<?php foreach (all_categories() as $all_category) : ?>
 												<li class="nav-item">
@@ -250,7 +265,7 @@
 						<div class="login-cart" style="line-height: 76px;">
 							<div class="cart-popup">
 								<?php $cart = is_null(get_cookie("cart")) ? array() : json_decode(get_cookie("cart"), TRUE); ?>
-								<a href="<?php echo base_url('cart') ?>" class="cart"><i class="fab fa-opencart"></i><?php if (count($cart) > 0) { ?> <span><?= count($cart); ?></span><?php } ?></a>
+								<a href="<?php echo base_url('cart') ?>" class="cart" aria-label="<?= html_escape(lang("lang_h52")) ?>"><i class="fab fa-opencart" aria-hidden="true"></i><?php if (count($cart) > 0) { ?> <span><?= count($cart); ?></span><?php } ?></a>
 
 							</div>
 						</div>
@@ -258,13 +273,13 @@
 					<div class="col-12 mt-2 d-lg-none">
 						<div class="container">
 							<div class="d-flex align-items-center justify-space-between">
-								<button class="btn btn-lg mobile-menu-button"><i class="fas fa-align-justify"></i></button>
+								<button type="button" class="btn btn-lg mobile-menu-button" aria-label="<?= $rtl ? "القائمة" : "Menu" ?>"><i class="fas fa-align-justify" aria-hidden="true"></i></button>
 								<div class="text-center" style="flex:1 1 auto">
-									<img src="<?= store_logo() ?>" alt="logo" style="width: 90px; height:30px">
+									<img src="<?= store_logo() ?>" alt="<?= html_escape(setting("title")) ?>" width="90" height="30" style="width: 90px; height:30px;object-fit:contain">
 								</div>
 								<div class="cart-popup">
 									<?php $cart = is_null(get_cookie("cart")) ? array() : json_decode(get_cookie("cart"), TRUE); ?>
-									<a href="<?php echo base_url('cart') ?>" class="cart"><i class="fab fa-opencart"></i><?php if (count($cart) > 0) { ?> <span><?= count($cart); ?></span><?php } ?></a>
+									<a href="<?php echo base_url('cart') ?>" class="cart" aria-label="<?= html_escape(lang("lang_h52")) ?>"><i class="fab fa-opencart" aria-hidden="true"></i><?php if (count($cart) > 0) { ?> <span><?= count($cart); ?></span><?php } ?></a>
 								</div>
 							</div>
 						</div>
@@ -274,3 +289,4 @@
 			</div>
 		</div>
 	</header>
+	<main id="main">

@@ -1,3 +1,4 @@
+		</main>
 		<!---End-Offer-Banner-Section-->
 		<section class="section-spacing service-area pt-2 pb-2">
 			<div class="container">
@@ -5,11 +6,11 @@
 					<?php foreach (all_badges() as $badge) : ?>
 						<div class="col-lg-3 col-sm-6">
 							<div class="single-service-wrap">
-								<div class="thumb mb-1" style="float: initial;border-color: <?= setting("color") ?>;">
-									<img src="<?= $badge->img !== null && $badge->img != "" ? base_url("images/$badge->img") : base_url("assets/img/default_image.jpg") ?>" alt="img">
+								<div class="thumb mb-1" style="float: initial;border-color: <?= $color ?>;">
+									<img src="<?= $badge->img !== null && $badge->img != "" ? base_url("images/$badge->img") : base_url("assets/img/default_image.jpg") ?>" alt="" width="32" height="32">
 								</div>
 								<div class="wrap-details" style="text-align: center;width: initial;">
-									<h5><?= $badge->title ?></h5>
+									<h3 class="h5"><?= $badge->title ?></h3>
 									<p><?= $badge->subtitle ?></p>
 								</div>
 							</div>
@@ -24,14 +25,14 @@
 				<div class="row">
 					<div class="col-lg-3 col-md-4">
 						<div class="footer-about">
-							<img src="<?= store_logo() ?>" alt="">
+							<img src="<?= store_logo() ?>" <?= $logo_size ?> style="width:auto;max-width:100%;height:55px" alt="<?= html_escape(setting("title")) ?>" loading="lazy">
 							<p><?= setting("descr") ?></p>
 						</div>
 					</div>
 					<!--item-->
 					<div class="col-lg-3 col-md-4">
 						<div class="popular-tag">
-							<h4 class="footer-title"><?= lang("lang_h43") ?></h4>
+							<h2 class="footer-title"><?= lang("lang_h43") ?></h2>
 							<ul>
 								<?php foreach (footer_pages() as $footer_page) : ?>
 									<li>
@@ -44,11 +45,11 @@
 					<!--item-->
 					<div class="col-lg-3 col-md-4">
 						<div class="contact-us">
-							<h4 class="footer-title"><?= lang("lang_h44") ?></h4>
+							<h2 class="footer-title"><?= lang("lang_h44") ?></h2>
 							<ul>
 								<?php if (setting("teles") !== null && setting("teles") != "") { ?>
 									<?php foreach (explode(";", setting("teles")) as $teles) : ?>
-										<li><i class="fas fa-phone" style="color:<?= setting("color") ?>"></i><?= $teles ?></li>
+										<li><i class="fas fa-phone" style="color:<?= $color ?>"></i><?= $teles ?></li>
 									<?php endforeach; ?>
 								<?php } ?>
 
@@ -58,7 +59,7 @@
 									<?php endforeach; ?>
 								<?php } ?>
 
-								<li><i class="fas fa-envelope" style="color:<?= setting("color") ?>"></i> contact@<?= $_SERVER['HTTP_HOST'] ?></li>
+								<li><i class="fas fa-envelope" style="color:<?= $color ?>"></i> contact@<?= $_SERVER['HTTP_HOST'] ?></li>
 							</ul>
 						</div>
 					</div>
@@ -66,10 +67,10 @@
 					<!--item-->
 					<div class="col-lg-3 col-md-4">
 						<div class="contact-us">
-							<h4 class="footer-title"><?= lang("lang_h45") ?></h4>
+							<h2 class="footer-title"><?= lang("lang_h45") ?></h2>
 							<p><?= lang("lang_h46") ?></p>
 							<form action="<?= base_url("ajax/subscribe") ?>" method="post" data-newsletter data-error="<?= html_escape(lang("lang_h116")) ?>">
-								<input type="email" name="email" placeholder="<?= lang("lang_h100") ?>" required maxlength="250" class="email">
+								<input type="email" name="email" placeholder="<?= lang("lang_h100") ?>" required maxlength="250" class="email" aria-label="<?= html_escape(lang("lang_h100")) ?>">
 								<button type="submit" class="contact-btn"><?= lang("lang_h47") ?></button>
 							</form>
 							<p class="small mt-2" data-newsletter-msg></p>

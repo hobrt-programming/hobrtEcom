@@ -198,7 +198,7 @@
 									<label for="inp5"><?php echo lang("admin_h37") ?></label>
 									<select id="" class="form-control" name="cat">
 										<?php foreach($cats as $c) { ?>
-											<option value="<?php echo $c->id; ?>" <?php echo $key->descr == $c->id ? "selected" : ""; ?>><?php echo $c->title; ?></option>
+											<option value="<?php echo $c->id; ?>" <?php echo $key->cat == $c->id ? "selected" : ""; ?>><?php echo $c->title; ?></option>
 										<?php } ?>
 									</select>
 									<small id="emailHelp" class="form-text text-muted"><?php echo lang("admin_h37") ?></small>

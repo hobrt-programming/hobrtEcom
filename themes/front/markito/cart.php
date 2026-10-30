@@ -67,22 +67,22 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<div class="form-group">
-									<input type="text" name="fullname" class="form-control" oninvalid="setCustomValidity('<?= lang('lang_h62') ?>')" oninput="setCustomValidity('')" required placeholder="<?= lang("lang_h60") ?>">
+									<input type="text" name="fullname" class="form-control" oninvalid="setCustomValidity('<?= lang('lang_h62') ?>')" oninput="setCustomValidity('')" required aria-label="<?= html_escape(lang("lang_h60")) ?>" placeholder="<?= lang("lang_h60") ?>">
 								</div>
 							</div>
 							<div class="col-lg-12">
 								<div class="form-group">
-									<input type="text" name="phone" oninvalid="setCustomValidity('<?= lang('lang_h63') ?>')" oninput="setCustomValidity('')" required class="form-control" placeholder="<?= lang("lang_h23") ?>">
+									<input type="text" name="phone" inputmode="tel" autocomplete="tel" oninvalid="setCustomValidity('<?= lang('lang_h63') ?>')" oninput="setCustomValidity('')" required class="form-control" aria-label="<?= html_escape(lang("lang_h23")) ?>" placeholder="<?= lang("lang_h23") ?>">
 								</div>
 							</div>
 							<div class="col-lg-12">
 								<div class="form-group">
-									<input type="text" name="address" class="form-control" placeholder="<?= lang("lang_h24") ?>">
+									<input type="text" name="address" class="form-control" aria-label="<?= html_escape(lang("lang_h24")) ?>" placeholder="<?= lang("lang_h24") ?>">
 								</div>
 							</div>
 							<div class="col-lg-12">
 								<div class="form-group">
-									<input type="text" name="city" class="form-control" placeholder="<?= lang("lang_h25") ?>">
+									<input type="text" name="city" class="form-control" aria-label="<?= html_escape(lang("lang_h25")) ?>" placeholder="<?= lang("lang_h25") ?>">
 								</div>
 							</div>
 							

@@ -1,13 +1,13 @@
 <div class="new-collection-item">
     <div class="new-collection-item-img p-0">
-        <button class="wishlist noselect">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="-1 -1 26 26">
+        <button type="button" class="wishlist noselect" aria-label="<?= html_escape($p->title) ?>">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="-1 -1 26 26" aria-hidden="true">
                 <path d="M12 4.248c-3.148-5.402-12-3.825-12 2.944 0 4.661 5.571 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-6.792-8.875-8.306-12-2.944z" />
             </svg>
         </button>
-        <a href="<?php echo base_url("product/$p->slug"); ?>">
-            <img src="<?php echo $p->images !== null && $p->images != "" ? base_url('uploads/' . add_thumb($p->images, "_m")) : base_url("assets/img/default_product.png"); ?>" class="wow zoomIn" data-wow-delay=".25s" data-wow-duration="1s" data-wow-iteration="1" alt=""></a>
-        <a href="<?php echo base_url("product/$p->slug"); ?>" class="add-to-cart shadow"><i class="fas fa-cart-plus"></i><?= lang("lang_h51") ?></a>
+        <a href="<?php echo base_url("product/$p->slug"); ?>" aria-label="<?= html_escape($p->title) ?>">
+            <img src="<?php echo $p->images !== null && $p->images != "" ? base_url('uploads/' . add_thumb($p->images, "_m")) : base_url("assets/img/default_product.png"); ?>" class="wow zoomIn" data-wow-delay=".25s" data-wow-duration="1s" data-wow-iteration="1" width="400" height="400" loading="lazy" alt="<?= html_escape($p->title) ?>"></a>
+        <a href="<?php echo base_url("product/$p->slug"); ?>" class="add-to-cart shadow"><i class="fas fa-cart-plus" aria-hidden="true"></i><?= lang("lang_h51") ?></a>
     </div>
     <div class="new-collection-item-content">
         <ul class="item-rating">
@@ -32,7 +32,7 @@
             <?php endfor; ?>
         </ul>
         <a href="<?= base_url("product/$p->slug") ?>">
-            <h5><?php echo $p->title; ?></h5>
+            <h3><?php echo $p->title; ?></h3>
         </a>
 
         <?php /* each price in its own left-to-right box, so number and currency stay together in Arabic */ ?>
