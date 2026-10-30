@@ -20,7 +20,7 @@ $(document).on("ready", function() {
 			price += parseFloat($(this).text());
 		})
 		price += parseFloat($(".lx-shipping-costs b").text());
-		$(".lx-total-costs strong").text(price.toFixed(0) + "DH");
+		$(".lx-total-costs strong").text(price.toFixed(0) + Currency);
 		$("input[name='totalprice']").val(price.toFixed(0));	
 	}	
 	
@@ -51,13 +51,13 @@ $(".lx-product-qty .lx-plus").on("click",function(){
 		$("#cartcookie").val(cartcookie);		
 	}
 	else{
-		$(this).parent().parent().parent().find(".lx-price-total strong").text(($(this).attr("data-price") * $(this).prev("input").val()).toFixed(0) +  "DH");
+		$(this).parent().parent().parent().find(".lx-price-total strong").text(($(this).attr("data-price") * $(this).prev("input").val()).toFixed(0) + Currency);
 		var price = 0;
 		$(".lx-price-total strong").each(function(){
 			price += parseFloat($(this).text());
 		})
 		price += parseFloat($(".lx-shipping-costs b").text());
-		$(".lx-total-costs strong").text(price.toFixed(0) + "DH");
+		$(".lx-total-costs strong").text(price.toFixed(0) + Currency);
 		$("input[name='totalprice']").val(price.toFixed(0));
 	}
 });
@@ -77,13 +77,13 @@ $(".lx-product-qty .lx-minus").on("click",function(){
 		$("#cartcookie").val(cartcookie);
 	}
 	else{
-		$(this).parent().parent().parent().find(".lx-price-total strong").text(($(this).attr("data-price") * $(this).next("input").val()).toFixed(0) +  "DH");
+		$(this).parent().parent().parent().find(".lx-price-total strong").text(($(this).attr("data-price") * $(this).next("input").val()).toFixed(0) +  Currency);
 		var price = 0;
 		$(".lx-cart-products-list .lx-price-total strong").each(function(){
 			price += parseFloat($(this).text());
 		})
 		price += parseFloat($(".lx-shipping-costs b").text());
-		$(".lx-total-costs strong").text(price.toFixed(0) + "DH");
+		$(".lx-total-costs strong").text(price.toFixed(0) + Currency);
 		$("input[name='totalprice']").val(price.toFixed(0));
 	}
 });
@@ -119,8 +119,8 @@ $(".lx-product-images ul li img").on("click",function(){
 	$(".lx-product-main-img img").attr("src",$(this).attr("src").replace(/_m/,""));
 });
 
-$(".lx-purchase-btns-floating a").on("click",function(){
-	$(".lx-add-to-cart").html('<i class="fas fa-circle-notch fa-spin"></i> المرجو الانتظار');
+/*$(".lx-purchase-btns-floating a").on("click",function(){
+	$(".lx-add-to-cart").html('<i class="fas fa-circle-notch fa-spin"></i> ' + lang_h31);
 
 	var id = $(this).data("id");
 	var q = $("#qty").val();
@@ -141,7 +141,7 @@ $(".lx-purchase-btns-floating a").on("click",function(){
 });
 
 $(".lx-add-to-cart").on("click",function(){
-	$(".lx-add-to-cart").html('<i class="fas fa-circle-notch fa-spin"></i> المرجو الانتظار');
+	$(".lx-add-to-cart").html('<i class="fas fa-circle-notch fa-spin"></i> ' + lang_h31);
 
 	var id = $(this).data("id");
 	var q = $("#qty").val();
@@ -159,7 +159,47 @@ $(".lx-add-to-cart").on("click",function(){
 			window.location.href = base_url + "cart";
 		}		
 	});		
+});*/
+
+
+document.addEventListener('DOMContentLoaded', function() {
+	// Your JavaScript code here
+	$(".lx-purchase-btns-floating a").on("click", function() {
+		$(".lx-add-to-cart").html('<i class="fas fa-circle-notch fa-spin"></i> ' + lang_h31);
+
+		var dataForm = $("#productInfo").serialize();
+
+		$.ajax({
+			url: base_url + "ajax/addToCart",
+			type: 'post',
+			data: dataForm,
+			success: function(response) {
+				if (typeof fbq !== 'undefined')
+					fbq('track', 'AddToCart');
+				window.location.href = base_url + "cart";
+			}
+		});
+	});
+
+	$(".lx-add-to-cart").on("click", function() {
+		$(".lx-add-to-cart").html('<i class="fas fa-circle-notch fa-spin"></i> ' + lang_h31);
+
+		var dataForm = $("#productInfo").serialize();
+
+		$.ajax({
+			url: base_url + "ajax/addToCart",
+			type: 'post',
+			data: dataForm,
+			success: function(response) {
+				if (typeof fbq !== 'undefined')
+					fbq('track', 'AddToCart');
+				window.location.href = base_url + "cart";
+			}
+		});
+	});
 });
+
+
 $(".lx-applycoupon").on("click",function(){
 
 	var coupon = $("#coupon").val();
@@ -178,14 +218,14 @@ $(".lx-applycoupon").on("click",function(){
 				alert("ended");
 			}else {
 
-				var tp = parseInt($(".totalprice").text().replace("DH", ""));
+				var tp = parseInt($(".totalprice").text().replace(Currency, ""));
 
-				var ship = parseInt($(".ship").text().replace("DH", ""));
+				var ship = parseInt($(".ship").text().replace(Currency, ""));
 
 
 				var disc = (tp - ship) * parseInt(response) / 100;
 
-				$(".couponUse").html("الكوبون <b>- "+ disc +" DH</b>");
+				$(".couponUse").html("الكوبون <b>- "+ disc +" " +Currency+ "</b>");
 
 				$("#value").val(tp - disc);
 
@@ -193,7 +233,7 @@ $(".lx-applycoupon").on("click",function(){
 
 				var totalprice = tp - disc;
 
-				$(".lx-total-costs strong").html(totalprice + " DH");
+				$(".lx-total-costs strong").html(totalprice + " "+ Currency);
 
 			}
 		}		
@@ -230,17 +270,17 @@ $(".lx-delete-cookie").on("click",function(){
 			id : id,
 		},
 		success : function(response){
-			el.parent().parent().remove();
+			el.closest("tr").remove();
 			var price = 0;
 			$(".lx-cart-products-list .lx-price-total strong").each(function(){
 				price += parseFloat($(this).text());
 			})
 			price += parseFloat($(".lx-shipping-costs b").text());
-			$(".lx-total-costs strong").text(price.toFixed(0) + "DH");
+			$(".lx-total-costs strong").text(price.toFixed(0) + Currency);
 			$("input[name='totalprice']").val(price.toFixed(0));
 			$(".lx-floating-response").remove();
 			window.clearTimeout(timer);
-			$("body").append('<div class="lx-floating-response"><p class="lx-succes"><i class="material-icons">error_outline</i> تمت الإزالة من السلة<i class="material-icons">close</i></p></div>');
+			$("body").append('<div class="lx-floating-response"><p class="lx-succes"><i class="material-icons">error_outline</i> ' + lang_h32 + '<i class="material-icons">close</i></p></div>');
 			$(".lx-floating-response").fadeIn();
 			timer = window.setTimeout(function(){
 				$(".lx-floating-response").fadeOut();
@@ -281,7 +321,7 @@ $(".lx-cart-next-step a").on("click",function(){
 	else if(save === "noproduct"){
 		$(".lx-floating-response").remove();
 		window.clearTimeout(timer);
-		$("body").append('<div class="lx-floating-response"><p class="lx-error"><i class="material-icons">check</i> السلة فارغة<i class="material-icons">close</i></p></div>');
+		$("body").append('<div class="lx-floating-response"><p class="lx-error"><i class="material-icons">check</i> ' +lang_h33+ '<i class="material-icons">close</i></p></div>');
 		$(".lx-floating-response").fadeIn();
 		timer = window.setTimeout(function(){
 			$(".lx-floating-response").fadeOut();
@@ -290,7 +330,7 @@ $(".lx-cart-next-step a").on("click",function(){
 	else{
 		$(".lx-floating-response").remove();
 		window.clearTimeout(timer);
-		$("body").append('<div class="lx-floating-response"><p class="lx-error"><i class="material-icons">error_outline</i> المرجو ملأ الاستمارة بالكامل<i class="material-icons">close</i></p></div>');
+		$("body").append('<div class="lx-floating-response"><p class="lx-error"><i class="material-icons">error_outline</i> ' +lang_h34+ '<i class="material-icons">close</i></p></div>');
 		$(".lx-floating-response").fadeIn();
 		timer = window.setTimeout(function(){
 			$(".lx-floating-response").fadeOut();
@@ -307,23 +347,6 @@ $('.popup').on("click",function() {
 });
 
 
-$(".lx-cart-info-address select[name='city']").on("change",function(){
-	if($(".lx-shipping-costs b").text() !== "0DH"){
-		if($(this).val() === "Casablanca"){
-			$(".lx-shipping-costs b").text("25DH");
-		}
-		else{
-			$(".lx-shipping-costs b").text("45DH");
-		}		
-	}
-	var price = 0;
-	$(".lx-cart-products-list .lx-price-total strong").each(function(){
-		price += parseFloat($(this).text());
-	})
-	price += parseFloat($(".lx-shipping-costs b").text());
-	$(".lx-total-costs strong").text(price.toFixed(0) + "DH");
-	$("input[name='totalprice']").val(price.toFixed(0));
-});
 
 $(".lx-contact-us > a").on("click",function(){
 	if($(".lx-contact-us-content").css("display") !== "block"){

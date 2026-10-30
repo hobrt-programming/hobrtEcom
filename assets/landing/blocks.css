@@ -1,0 +1,59 @@
+/*
+ * Landing page blocks: the classes the "Fill with AI" landing text is built
+ * with (and that can be used by hand in the editor). Loaded by the landing
+ * theme and by the admin editor for the preview.
+ * Colors come from the page: --lp-main (header/button background) and
+ * --lp-on (text on it).
+ */
+.lp-hero, .lp-problem, .lp-steps, .lp-faq, .lp-cta, .lp-badges, .lp-benefits, .lp-guarantee, .lp-highlight {
+	--lp-main-color: var(--lp-main, #4e73df);
+	--lp-on-color: var(--lp-on, #ffffff);
+	display: block;
+	margin: 0 auto 28px;
+	max-width: 900px;
+	line-height: 1.7;
+	color: #1f2937;
+	text-align: center;
+}
+
+.lp-hero h2 { font-size: 2rem; font-weight: 900; line-height: 1.3; margin: 10px 0 8px; }
+.lp-hero .lp-sub { font-size: 1.15rem; color: #4b5563; margin: 0 auto 16px; max-width: 640px; }
+.lp-problem h3, .lp-steps h3, .lp-faq h3 { font-size: 1.45rem; font-weight: 800; margin-bottom: 10px; }
+.lp-problem p { font-size: 1.05rem; color: #374151; max-width: 720px; margin: 0 auto 8px; }
+
+.lp-img { display: block; width: 100%; max-width: 560px; margin: 14px auto; border-radius: 14px; box-shadow: 0 10px 30px rgba(0, 0, 0, .12); }
+
+.lp-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.lp-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 999px; background: #f3f4f6; font-weight: 700; font-size: .95rem; }
+.lp-badge i, .lp-benefit i, .lp-guarantee > i { color: var(--lp-main-color); }
+
+.lp-benefits { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.lp-benefit { background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 18px 16px; box-shadow: 0 4px 14px rgba(0, 0, 0, .05); }
+.lp-benefit i { font-size: 1.8rem; margin-bottom: 8px; display: block; }
+.lp-benefit h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 4px; }
+.lp-benefit p { color: #4b5563; font-size: .97rem; margin: 0; }
+
+.lp-steps ol { list-style: none; counter-reset: lp-step; display: grid; gap: 10px; max-width: 560px; margin: 0 auto; padding: 0; }
+.lp-steps li { counter-increment: lp-step; display: flex; align-items: center; gap: 12px; background: #f9fafb; border-radius: 12px; padding: 12px 14px; text-align: start; font-weight: 600; }
+.lp-steps li::before { content: counter(lp-step); flex: 0 0 34px; height: 34px; border-radius: 50%; background: var(--lp-main-color); color: var(--lp-on-color); display: flex; align-items: center; justify-content: center; font-weight: 900; }
+
+.lp-guarantee { display: flex; align-items: center; gap: 14px; background: #f0fdf4; border: 1px dashed #86efac; border-radius: 14px; padding: 16px 18px; text-align: start; }
+.lp-guarantee > i { font-size: 2.2rem; flex: 0 0 auto; }
+.lp-guarantee p { margin: 0; font-weight: 600; }
+
+.lp-highlight { background: #fffbeb; border-radius: 14px; padding: 14px 18px; font-weight: 700; font-size: 1.1rem; }
+
+.lp-faq { text-align: start; max-width: 720px; }
+.lp-faq h3 { text-align: center; }
+.lp-faq h4 { font-size: 1.05rem; font-weight: 800; margin: 14px 0 4px; }
+.lp-faq h4::before { content: "?"; display: inline-flex; width: 24px; height: 24px; margin-inline-end: 8px; border-radius: 50%; background: var(--lp-main-color); color: var(--lp-on-color); align-items: center; justify-content: center; font-size: .85rem; }
+.lp-faq p { color: #4b5563; margin: 0; padding-inline-start: 32px; }
+
+.lp-cta { background: #f9fafb; border-radius: 18px; padding: 22px 16px; }
+.lp-cta h3 { font-size: 1.4rem; font-weight: 900; margin-bottom: 6px; }
+.lp-cta p { margin: 0 0 10px; }
+
+@media (max-width: 600px) {
+	.lp-hero h2 { font-size: 1.5rem; }
+	.lp-benefits { grid-template-columns: 1fr; }
+}

@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2018, British Columbia Institute of Technology
+ * Copyright (c) 2019 - 2022, CodeIgniter Foundation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,9 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @copyright	Copyright (c) 2019 - 2022, CodeIgniter Foundation (https://codeigniter.com/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
@@ -44,7 +45,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Helpers
  * @category	Helpers
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/helpers/date_helper.html
+ * @link		https://codeigniter.com/userguide3/helpers/date_helper.html
  */
 
 // ------------------------------------------------------------------------
@@ -130,14 +131,10 @@ if ( ! function_exists('standard_date'))
 	 * Returns a date formatted according to the submitted standard.
 	 *
 	 * As of PHP 5.2, the DateTime extension provides constants that
-	 * serve for the exact same purpose and are used with date().
+	 * serve for the exact same purpose and are used internally by
+	 * date() as well.
 	 *
-	 * @todo	Remove in version 3.1+.
-	 * @deprecated	3.0.0	Use PHP's native date() instead.
-	 * @link	http://www.php.net/manual/en/class.datetime.php#datetime.constants.types
-	 *
-	 * @example	date(DATE_RFC822, now()); // default
-	 * @example	date(DATE_W3C, $time); // a different format and time
+	 * @deprecated	3.1.3	Use PHP's native date() with DateTime constants
 	 *
 	 * @param	string	$fmt = 'DATE_RFC822'	the chosen format
 	 * @param	int	$time = NULL		Unix timestamp
@@ -191,7 +188,7 @@ if ( ! function_exists('timespan'))
 
 		if ($years > 0)
 		{
-			return $years.' '.$CI->lang->line($years > 2 && $years < 11 ? 'date_years' : 'date_year');
+			$str[] = $years.' '.$CI->lang->line($years > 1 ? 'date_years' : 'date_year');
 		}
 
 		$seconds -= $years * 31557600;
@@ -201,7 +198,7 @@ if ( ! function_exists('timespan'))
 		{
 			if ($months > 0)
 			{
-				return $months.' '.$CI->lang->line($months > 2 && $months < 11 ? 'date_months' : 'date_month');
+				$str[] = $months.' '.$CI->lang->line($months > 1 ? 'date_months' : 'date_month');
 			}
 
 			$seconds -= $months * 2629743;
@@ -213,7 +210,7 @@ if ( ! function_exists('timespan'))
 		{
 			if ($weeks > 0)
 			{
-				return $weeks.' '.$CI->lang->line($weeks > 2 && $weeks < 11 ? 'date_weeks' : 'date_week');
+				$str[] = $weeks.' '.$CI->lang->line($weeks > 1 ? 'date_weeks' : 'date_week');
 			}
 
 			$seconds -= $weeks * 604800;
@@ -225,7 +222,7 @@ if ( ! function_exists('timespan'))
 		{
 			if ($days > 0)
 			{
-				return $days.' '.$CI->lang->line($days > 2 && $days < 11 ? 'date_days' : 'date_day');
+				$str[] = $days.' '.$CI->lang->line($days > 1 ? 'date_days' : 'date_day');
 			}
 
 			$seconds -= $days * 86400;
@@ -237,7 +234,7 @@ if ( ! function_exists('timespan'))
 		{
 			if ($hours > 0)
 			{
-				return $hours.' '.$CI->lang->line($hours > 2 && $hours < 11 ? 'date_hours' : 'date_hour');
+				$str[] = $hours.' '.$CI->lang->line($hours > 1 ? 'date_hours' : 'date_hour');
 			}
 
 			$seconds -= $hours * 3600;
@@ -249,7 +246,7 @@ if ( ! function_exists('timespan'))
 		{
 			if ($minutes > 0)
 			{
-				return $minutes.' '.$CI->lang->line($minutes > 2 && $minutes < 11 ? 'date_minutes' : 'date_minute');
+				$str[] = $minutes.' '.$CI->lang->line($minutes > 1 ? 'date_minutes' : 'date_minute');
 			}
 
 			$seconds -= $minutes * 60;
@@ -257,7 +254,7 @@ if ( ! function_exists('timespan'))
 
 		if (count($str) === 0)
 		{
-			$str[] = $seconds.' '.$CI->lang->line($seconds > 2 && $seconds < 11 ? 'date_seconds' : 'date_second');
+			$str[] = $seconds.' '.$CI->lang->line($seconds > 1 ? 'date_seconds' : 'date_second');
 		}
 
 		return implode(', ', $str);
@@ -606,7 +603,7 @@ if ( ! function_exists('timezones'))
 	 * for various other ones in this library
 	 *
 	 * @param	string	timezone
-	 * @return	string
+	 * @return	string|array
 	 */
 	function timezones($tz = '')
 	{

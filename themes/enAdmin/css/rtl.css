@@ -1,0 +1,244 @@
+.rtl, [dir="rtl"] {
+	 text-align: right;
+	 direction: rtl;
+}
+ .rtl .nav, [dir="rtl"] .nav {
+	 padding-right: 0;
+}
+ .rtl .navbar-nav .nav-item, [dir="rtl"] .navbar-nav .nav-item {
+	 float: right;
+}
+ .rtl .navbar-nav .nav-item + .nav-item, [dir="rtl"] .navbar-nav .nav-item + .nav-item {
+	 margin-left: 1rem !important;
+	 margin-left: inherit;
+}
+ .rtl th, [dir="rtl"] th {
+	 text-align: right;
+}
+ .rtl .alert-dismissible, [dir="rtl"] .alert-dismissible {
+	 padding-right: 1.25rem;
+	 padding-left: 4rem;
+}
+ .rtl .dropdown-menu, [dir="rtl"] .dropdown-menu {
+	 right: 0;
+	 left: inherit;
+	 text-align: right;
+}
+ .rtl .checkbox label, [dir="rtl"] .checkbox label {
+	 padding-right: 1.25rem;
+	 padding-left: inherit;
+}
+ .rtl .btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle), [dir="rtl"] .btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
+	 border-radius: 0 0.25rem 0.25rem 0;
+}
+ .rtl .btn-group > .btn:last-child:not(:first-child), [dir="rtl"] .btn-group > .btn:last-child:not(:first-child), .rtl .btn-group > .dropdown-toggle:not(:first-child), [dir="rtl"] .btn-group > .dropdown-toggle:not(:first-child) {
+	 border-radius: 0.25rem 0 0 0.25rem;
+}
+ .rtl .btn-group > .btn-group:last-child:not(:first-child) > .btn:first-child, [dir="rtl"] .btn-group > .btn-group:last-child:not(:first-child) > .btn:first-child {
+	 border-radius: 0.25rem 0 0 0.25rem;
+}
+ .rtl .custom-control, [dir="rtl"] .custom-control {
+	 padding-right: 1.5rem;
+	 padding-left: inherit;
+	 margin-right: inherit;
+	 margin-left: 1rem;
+}
+ .rtl .custom-control-indicator, [dir="rtl"] .custom-control-indicator {
+	 right: 0;
+	 left: inherit;
+}
+ .rtl .custom-file-label::after, [dir="rtl"] .custom-file-label::after {
+	 right: initial;
+	 left: -1px;
+	 border-radius: 0.25rem 0 0 0.25rem;
+}
+ .rtl .custom-control-label::after, [dir="rtl"] .custom-control-label::after, .rtl .custom-control-label::before, [dir="rtl"] .custom-control-label::before {
+	 right: -1.5rem;
+	 left: inherit;
+}
+ .rtl .custom-select, [dir="rtl"] .custom-select {
+	 padding: 0.375rem 1.75rem 0.375rem 0.75rem;
+	 background: #fff str-replace(url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='#343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e"), "#", "%23") no-repeat left 0.75rem center;
+	 background-size: 8px 10px;
+}
+ .rtl .custom-switch, [dir="rtl"] .custom-switch {
+	 padding-right: 2.25rem;
+	 padding-left: inherit;
+}
+ .rtl .custom-switch .custom-control-label::before, [dir="rtl"] .custom-switch .custom-control-label::before {
+	 right: -2.25rem;
+}
+ .rtl .custom-switch .custom-control-label::after, [dir="rtl"] .custom-switch .custom-control-label::after {
+	 right: calc(-2.25rem + 2px);
+}
+ .rtl .custom-switch .custom-control-input:checked ~ .custom-control-label::after, [dir="rtl"] .custom-switch .custom-control-input:checked ~ .custom-control-label::after {
+	 transform: translateX(- 2.75rem);
+}
+ .rtl .input-group > .input-group-append:last-child > .btn:not(:last-child):not(.dropdown-toggle), [dir="rtl"] .input-group > .input-group-append:last-child > .btn:not(:last-child):not(.dropdown-toggle), .rtl .input-group > .input-group-append:last-child > .input-group-text:not(:last-child), [dir="rtl"] .input-group > .input-group-append:last-child > .input-group-text:not(:last-child), .rtl .input-group > .input-group-append:not(:last-child) > .btn, [dir="rtl"] .input-group > .input-group-append:not(:last-child) > .btn, .rtl .input-group > .input-group-append:not(:last-child) > .input-group-text, [dir="rtl"] .input-group > .input-group-append:not(:last-child) > .input-group-text, .rtl .input-group > .input-group-prepend > .btn, [dir="rtl"] .input-group > .input-group-prepend > .btn, .rtl .input-group > .input-group-prepend > .input-group-text, [dir="rtl"] .input-group > .input-group-prepend > .input-group-text {
+	 border-radius: 0 0.25rem 0.25rem 0;
+}
+ .rtl .input-group > .input-group-append > .btn, [dir="rtl"] .input-group > .input-group-append > .btn, .rtl .input-group > .input-group-append > .input-group-text, [dir="rtl"] .input-group > .input-group-append > .input-group-text, .rtl .input-group > .input-group-prepend:first-child > .btn:not(:first-child), [dir="rtl"] .input-group > .input-group-prepend:first-child > .btn:not(:first-child), .rtl .input-group > .input-group-prepend:first-child > .input-group-text:not(:first-child), [dir="rtl"] .input-group > .input-group-prepend:first-child > .input-group-text:not(:first-child), .rtl .input-group > .input-group-prepend:not(:first-child) > .btn, [dir="rtl"] .input-group > .input-group-prepend:not(:first-child) > .btn, .rtl .input-group > .input-group-prepend:not(:first-child) > .input-group-text, [dir="rtl"] .input-group > .input-group-prepend:not(:first-child) > .input-group-text {
+	 border-radius: 0.25rem 0 0 0.25rem;
+}
+ .rtl .input-group > .custom-select:not(:first-child), [dir="rtl"] .input-group > .custom-select:not(:first-child), .rtl .input-group > .form-control:not(:first-child), [dir="rtl"] .input-group > .form-control:not(:first-child) {
+	 border-radius: 0.25rem 0 0 0.25rem;
+}
+ .rtl .input-group > .custom-select:not(:last-child), [dir="rtl"] .input-group > .custom-select:not(:last-child), .rtl .input-group > .form-control:not(:last-child), [dir="rtl"] .input-group > .form-control:not(:last-child) {
+	 border-radius: 0 0.25rem 0.25rem 0;
+}
+ .rtl .input-group > .custom-select:not(:last-child):not(:first-child), [dir="rtl"] .input-group > .custom-select:not(:last-child):not(:first-child), .rtl .input-group > .form-control:not(:last-child):not(:first-child), [dir="rtl"] .input-group > .form-control:not(:last-child):not(:first-child) {
+	 border-radius: 0;
+}
+ .rtl .radio input, [dir="rtl"] .radio input, .rtl .radio-inline, [dir="rtl"] .radio-inline, .rtl .checkbox input, [dir="rtl"] .checkbox input, .rtl .checkbox-inline input, [dir="rtl"] .checkbox-inline input {
+	 margin-right: -1.25rem;
+	 margin-left: inherit;
+}
+ .rtl .breadcrumb-item + .breadcrumb-item, [dir="rtl"] .breadcrumb-item + .breadcrumb-item {
+	 padding-right: 0.5rem;
+	 padding-left: 0;
+	 color: #6c757d;
+	 content: "/";
+}
+ .rtl .breadcrumb-item + .breadcrumb-item::before, [dir="rtl"] .breadcrumb-item + .breadcrumb-item::before {
+	 padding-right: 0;
+	 padding-left: 0.5rem;
+}
+ .rtl .list-group, [dir="rtl"] .list-group {
+	 padding-right: 0;
+	 padding-left: 40px;
+}
+ .rtl .close, [dir="rtl"] .close {
+	 float: left;
+}
+ .rtl .modal-header .close, [dir="rtl"] .modal-header .close {
+	 margin: -15px auto -15px -15px;
+}
+ .rtl .modal-footer > :not(:first-child), [dir="rtl"] .modal-footer > :not(:first-child) {
+	 margin-right: 0.25rem;
+}
+ .rtl .modal-footer > :not(:last-child), [dir="rtl"] .modal-footer > :not(:last-child) {
+	 margin-left: 0.25rem;
+}
+ .rtl .modal-footer > :first-child, [dir="rtl"] .modal-footer > :first-child {
+	 margin-right: 0;
+}
+ .rtl .modal-footer > :last-child, [dir="rtl"] .modal-footer > :last-child {
+	 margin-left: 0;
+}
+ .rtl .alert-dismissible .close, [dir="rtl"] .alert-dismissible .close {
+	 right: inherit;
+	 left: 0;
+}
+ .rtl .dropdown-toggle::after, [dir="rtl"] .dropdown-toggle::after {
+	 margin-right: 0.255em;
+	 margin-left: 0;
+}
+ .rtl .form-check-input, [dir="rtl"] .form-check-input {
+	 margin-left: inherit;
+}
+ .rtl .form-check-label, [dir="rtl"] .form-check-label {
+	 padding-right: 1.25rem;
+	 padding-left: inherit;
+}
+ .rtl .pagination, [dir="rtl"] .pagination, .rtl .list-unstyled, [dir="rtl"] .list-unstyled, .rtl .list-inline, [dir="rtl"] .list-inline {
+	 padding-right: 0;
+	 padding-left: inherit;
+}
+
+
+[dir="rtl"] .sidebar.toggled {
+	padding-inline-start: 0;
+}
+
+[dir="rtl"] .sidebar.toggled .nav-item .collapse {
+	right: calc(6.5rem + 1.5rem / 2);
+}
+
+[dir="rtl"] .ml-md-3, [dir="rtl"] .mx-md-3 {
+	margin-right: 1rem!important;
+}
+
+[dir="rtl"] .ml-auto, [dir="rtl"] .mx-auto {
+    margin-right: auto!important;
+    margin-left: 0 !important;
+}
+
+[dir="rtl"] .sidebar {
+	padding-inline-start: 0;
+}
+
+.rtl .sidebar .nav-item .nav-link {
+	text-align: right;
+}
+
+.rtl .sidebar.toggled .nav-item .nav-link {
+	text-align: center;
+}
+
+.rtl .sidebar .nav-item .nav-link[data-toggle=collapse]::after {
+	float: left;
+}
+
+.rtl .sidebar .nav-item .nav-link[data-toggle=collapse].collapsed::after {
+	content: "\f104";
+}
+
+.datepicker-dropdown {max-width: 300px;}
+.datepicker {float: right}
+.datepicker.dropdown-menu {right:auto}
+
+
+.rtl div.dataTables_wrapper {
+        direction: rtl;
+    }
+
+
+.mr-2, .mx-2 {
+    margin-left: .5rem!important;
+}
+
+.page-item:first-child .page-link {
+    margin-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: .35rem;
+    border-bottom-right-radius: .35rem;
+}
+
+.page-item:last-child .page-link {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: .35rem;
+    border-bottom-left-radius: .35rem;
+}
+
+table.table-bordered.dataTable th, table.table-bordered.dataTable td {
+    border-left-width: 1px;
+    border-right-width: 0;
+}
+
+.bootstrap-select .dropdown-toggle .filter-option {
+	text-align: right !important;
+}
+
+.dropdown-menu {
+	text-align: right !important;
+}
+
+.rtl .float-right {
+	float: left !important;
+}
+
+
+div.dataTables_wrapper div.dataTables_filter label {
+	float: left;
+}
+
+.topbar .dropdown .dropdown-menu {
+	left: 0;
+	right: unset;
+}
+
+.rtl .float-left {
+	float: right !important;
+}

@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2018, British Columbia Institute of Technology
+ * Copyright (c) 2019 - 2022, CodeIgniter Foundation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,9 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @copyright	Copyright (c) 2019 - 2022, CodeIgniter Foundation (https://codeigniter.com/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
@@ -44,7 +45,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Helpers
  * @category	Helpers
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/helpers/text_helper.html
+ * @link		https://codeigniter.com/userguide3/helpers/text_helper.html
  */
 
 // ------------------------------------------------------------------------
@@ -342,12 +343,12 @@ if ( ! function_exists('highlight_code'))
 		$str = preg_replace(
 			array(
 				'/<span style="color: #([A-Z0-9]+)">&lt;\?php(&nbsp;| )/i',
-				'/(<span style="color: #[A-Z0-9]+">.*?)\?&gt;<\/span>\n<\/span>\n<\/code>/is',
+				'/(<span style="color: #[A-Z0-9]+">.*?)\?&gt;<\/span>(\n<\/span>\n<\/code>|<\/code><\/pre>)/is',
 				'/<span style="color: #[A-Z0-9]+"\><\/span>/i'
 			),
 			array(
 				'<span style="color: #$1">',
-				"$1</span>\n</span>\n</code>",
+				'$1</span>$2',
 				''
 			),
 			$str
@@ -422,6 +423,8 @@ if ( ! function_exists('convert_accented_characters'))
 			$array_from = array_keys($foreign_characters);
 			$array_to = array_values($foreign_characters);
 		}
+		
+		$str = (gettype($str) === 'NULL') ? '' : $str;
 
 		return preg_replace($array_from, $array_to, $str);
 	}

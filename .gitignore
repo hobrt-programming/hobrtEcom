@@ -1,0 +1,35 @@
+*/config/development
+*/logs/log-*.php
+!*/logs/index.html
+*/cache/*
+!system/cache/*
+!*/cache/index.html
+!*/cache/.htaccess
+
+user_guide_src/build/*
+user_guide_src/cilexer/build/*
+user_guide_src/cilexer/dist/*
+user_guide_src/cilexer/pycilexer.egg-info/*
+
+#codeigniter 3
+application/logs/*
+!application/logs/index.html
+!application/logs/.htaccess
+/vendor/
+
+# Ignore everything in "uploads" folder
+/uploads/*
+# But allow the empty folder to be sent
+!/uploads/.gitkeep
+!/uploads/index.html
+!/uploads/.htaccess
+
+/images/*
+!/images/.gitkeep
+!/images/.htaccess
+to_do.txt
+
+# per-install secrets
+application/config/secrets.php
+application/config/local.php
+application/cache/hb_installer_attempts.json

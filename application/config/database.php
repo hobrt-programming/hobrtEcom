@@ -73,11 +73,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+/*
+| Connection settings come from application/config/local.php (written by
+| install/install.php, git-ignored) or from HBECOM_DB_* environment variables,
+| so uploading a new release never overwrites them.
+*/
+$hb_local = is_file(APPPATH.'config/local.php') ? (include APPPATH.'config/local.php') : array();
+$hb_db = ($hb_local['db'] ?? array()) + array('hostname' => 'localhost', 'port' => 3306, 'database' => '', 'username' => '', 'password' => '');
+
+$hb_host = getenv('HBECOM_DB_HOST') ?: $hb_db['hostname'];
+$hb_port = (int) (getenv('HBECOM_DB_PORT') ?: $hb_db['port']);
+$hb_name = getenv('HBECOM_DB_NAME') ?: $hb_db['database'];
+
 $db['default'] = array(
-	'dsn'	=> 'mysql:host=localhost; dbname=nx; charset=utf8;',
+	'dsn'	=> 'mysql:host='.$hb_host.';port='.$hb_port.';dbname='.$hb_name.';charset=utf8mb4',
 	'hostname' => '',
-	'username' => 'root',
-	'password' => 'a',
+	'username' => getenv('HBECOM_DB_USER') ?: $hb_db['username'],
+	'password' => getenv('HBECOM_DB_PASS') !== FALSE ? getenv('HBECOM_DB_PASS') : $hb_db['password'],
 	'database' => '',
 	'dbdriver' => 'pdo',
 	'dbprefix' => '',
@@ -85,8 +97,8 @@ $db['default'] = array(
 	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,
 	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
+	'char_set' => 'utf8mb4',
+	'dbcollat' => 'utf8mb4_general_ci',
 	'swap_pre' => '',
 	'encrypt' => FALSE,
 	'compress' => FALSE,

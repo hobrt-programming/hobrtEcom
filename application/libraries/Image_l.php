@@ -65,7 +65,7 @@
  * TO DO
  *
  * THANKS
- * Matjaž for poiting out the save_pa bug (should of tested it!)
+ * Matja탑 for poiting out the save_pa bug (should of tested it!)
  * Cahva for posting yet another bug in the save_pa (Man I can be silly sometimes!)
  * Cole spotting the resize flaw and providing a fix
  * Nuno Mira for suggesting the new width/new size on teh ci forums
@@ -101,7 +101,7 @@ class Image_l
 	public $new_width = 0;
 	public $new_height = 0;
 
-	function Image_moo()
+	function __construct()
 	//----------------------------------------------------------------------------------------------------------
 	// create stuff here as needed
 	//----------------------------------------------------------------------------------------------------------
@@ -109,6 +109,8 @@ class Image_l
 		log_message('debug', "Image Moo Class Initialized");
 		if ($this->jpeg_ignore_warnings) $this->ignore_jpeg_warnings();
 		if ($this->can_stretch) $this->can_stretch(TRUE);
+
+		$this->check_gd();
 	}
 
 	public function ignore_jpeg_warnings($onoff = TRUE)
@@ -137,6 +139,16 @@ class Image_l
 	//----------------------------------------------------------------------------------------------------------
 	{
 		$this->error_msg = array();
+	}
+
+	function _is_gd_image( $image ) {
+	    if ( is_resource( $image ) && 'gd' === get_resource_type( $image )
+	        || is_object( $image ) && $image instanceof GdImage
+	    ) {
+	        return true;
+	    }
+	 
+	    return false;
 	}
 
 	private function set_error($msg)
@@ -169,7 +181,8 @@ class Image_l
 		// is gd loaded?
 		if ( ! extension_loaded('gd'))
 		{
-			if ( ! dl('gd.so'))
+			// dl() only exists on the CLI, calling it from a web request is fatal
+			if ( ! function_exists('dl') || ! @dl('gd.so'))
 			{
 				$this->set_error('GD library does not appear to be loaded');
 				return FALSE;
@@ -207,7 +220,7 @@ class Image_l
 	//----------------------------------------------------------------------------------------------------------
 	{
 		// generic check
-		if (!is_resource($this->main_image))
+		if (!$this->_is_gd_image($this->main_image))
 		{
 			$this->set_error("No main image loaded!");
 			return FALSE;
@@ -320,7 +333,7 @@ class Image_l
 		$parts=pathinfo($this->filename);
 
 		// save
-		$this->save($parts["dirname"].'/'.$prepend.$parts['filename'].$append.'.'.$parts["extension"], $overwrite);
+		$this->save($parts["dirname"].'/'.$prepend.$parts['filename'].$append.'.webp', $overwrite);
 
 		return $this;
 	}
@@ -348,27 +361,8 @@ class Image_l
 			}
 		}
 
-		// find out the type of file to save
-		$ext = strtoupper(pathinfo($filename, PATHINFO_EXTENSION));
-		switch ($ext)
-		{
-			case "GIF"  :
-				imagegif($this->temp_image, $filename);
-				return $this;
-				break;
-			case "JPG" :
-			case "JPEG" :
-				imagejpeg($this->temp_image, $filename, $this->jpeg_quality);
-				return $this;
-				break;
-			case "PNG" :
-				imagepng($this->temp_image, $filename);
-				return $this;
-				break;
-		}
+		imagewebp($this->temp_image, $filename, $this->jpeg_quality);
 
-		// invalid filetype?!
-		$this->set_error('Do no know what '.$ext.' filetype is in filename '.$filename);
 		return $this;
 	}
 
@@ -421,7 +415,7 @@ class Image_l
 		// validate we loaded a main image
 		if (!$this->_check_image()) return $this;
 
-		if (!is_resource($this->temp_image))
+		if (!$this->_is_gd_image($this->temp_image))
 		{
 			$this->set_error("No temp image created!");
 			return FALSE;
@@ -462,7 +456,7 @@ class Image_l
 		$this->main_image = $this->_load_image($filename);
 
 		// no error, then get the dminesions set
-		if ($this->main_image <> FALSE)
+		if ($this->main_image !== FALSE)
 		{
 			$this->new_width = $this->width = imageSX($this->main_image);
 			$this->new_height = $this->height = imageSY($this->main_image);
@@ -478,10 +472,10 @@ class Image_l
 	// Load an image, public function
 	//----------------------------------------------------------------------------------------------------------
 	{
-		if(is_resource($this->watermark_image)) imagedestroy($this->watermark_image);
+		if($this->_is_gd_image($this->watermark_image)) imagedestroy($this->watermark_image);
 		$this->watermark_image = $this->_load_image($filename);
 
-		if(is_resource($this->watermark_image))
+		if($this->_is_gd_image($this->watermark_image))
 		{
 			$this->watermark_method = 1;
 			if(($transparent_x <> NULL) AND ($transparent_y <> NULL))
@@ -561,13 +555,13 @@ class Image_l
 	// If temp image is empty, e.g. not resized or done anything then just copy main image
 	//----------------------------------------------------------------------------------------------------------
 	{
-		if (!is_resource($this->temp_image))
+		if (!$this->_is_gd_image($this->temp_image))
 		{
 			// create a temp based on new dimensions
 			$this->temp_image = imagecreatetruecolor($this->width, $this->height);
 
 			// check it
-			if(!is_resource($this->temp_image))
+			if(!$this->_is_gd_image($this->temp_image))
 			{
 				$this->set_error('Unable to create temp image sized '.$this->width.' x '.$this->height);
 				return FALSE;
@@ -584,9 +578,9 @@ class Image_l
 	// clear everything!
 	//----------------------------------------------------------------------------------------------------------
 	{
-		if(is_resource($this->main_image)) imagedestroy($this->main_image);
-		if(is_resource($this->watermark_image)) imagedestroy($this->watermark_image);
-		if(is_resource($this->temp_image)) imagedestroy($this->temp_image);
+		if($this->_is_gd_image($this->main_image)) imagedestroy($this->main_image);
+		if($this->_is_gd_image($this->watermark_image)) imagedestroy($this->watermark_image);
+		if($this->_is_gd_image($this->temp_image)) imagedestroy($this->temp_image);
 		return $this;
 	}
 
@@ -595,71 +589,49 @@ class Image_l
 	// you may want to revert back to teh original image to work on, e.g. watermark, this clears temp
 	//----------------------------------------------------------------------------------------------------------
 	{
-		if(is_resource($this->temp_image)) imagedestroy($this->temp_image);
+		if($this->_is_gd_image($this->temp_image)) imagedestroy($this->temp_image);
 		return $this;
 	}
 
-	public function resize_crop($mw,$mh)
-	//----------------------------------------------------------------------------------------------------------
-	// take main image and resize to tempimage using EXACT boundaries mw,mh (max width and max height)
-	// this is proportional and crops the image centrally to fit
-	//----------------------------------------------------------------------------------------------------------
-	{
-		if (!$this->_check_image()) return $this;
+	public function resize_crop($mw, $mh)
+{
+    if (!$this->_check_image()) return $this;
 
-		// clear temp image
-		$this->clear_temp();
+    $this->clear_temp();
+    $this->temp_image = imagecreatetruecolor($mw, $mh);
 
-		// create a temp based on new dimensions
-		$this->temp_image = imagecreatetruecolor($mw, $mh);
+    if (!$this->_is_gd_image($this->temp_image)) {
+        $this->set_error('Unable to create temp image sized ' . $mw . ' x ' . $mh);
+        return $this;
+    }
 
-		// check it
-		if(!is_resource($this->temp_image))
-		{
-			$this->set_error('Unable to create temp image sized '.$mw.' x '.$mh);
-			return $this;
-		}
+    $wx = $this->width / $mw;
+    $wy = $this->height / $mh;
 
-		// work out best positions for copy
-		$wx=$this->width / $mw;
-		$wy=$this->height / $mh;
+    if ($wx >= $wy) {
+        $sy = 0;
+        $sy2 = $this->height;
+        $calc_width = $mw * $wy;
+        $sx = (int)(($this->width - $calc_width) / 2); // Cast to integer
+        $sx2 = (int)$calc_width; // Cast to integer
+    } else {
+        $sx = 0;
+        $sx2 = $this->width;
+        $calc_height = $mh * $wx;
+        $sy = (int)(($this->height - $calc_height) / 2); // Cast to integer
+        $sy2 = (int)$calc_height; // Cast to integer
+    }
 
-		if ($wx >= $wy)
-		{
-			// use full height
-			$sy = 0;
-			$sy2 = $this->height;
+    imagealphablending($this->temp_image, false);
+    imagesavealpha($this->temp_image, true);
 
-			// calcs
-			$calc_width = $mw * $wy;
-			$sx = ($this->width - $calc_width) / 2;
-			$sx2 = $calc_width;
-		}
-		else
-		{
-			// use full width
-			$sx = 0;
-			$sx2 = $this->width;
+    imagecopyresampled($this->temp_image, $this->main_image, 0, 0, $sx, $sy, $mw, $mh, $sx2, $sy2);
 
-			// calcs
-			$calc_height = $mh * $wx;
-			$sy = ($this->height - $calc_height) / 2;
-			$sy2 = $calc_height;
-		}
-		
-		//image transparency preserved
-		imagealphablending( $this->temp_image, false );
-		imagesavealpha( $this->temp_image, true );
+    $this->_set_new_size();
 
-		// copy section
-		imagecopyresampled($this->temp_image, $this->main_image, 0, 0, $sx, $sy, $mw, $mh, $sx2, $sy2);
+    return $this;
+}
 
-		// set sizes
-		$this->_set_new_size();
-
-		// return self
-		return $this;
-	}
 
 	public function resize($mw, $mh=FALSE, $pad=FALSE)
 	//----------------------------------------------------------------------------------------------------------
@@ -695,23 +667,23 @@ class Image_l
 		// create a temp based on new dimensions
 		if ($pad)
 		{
-			$tx = $mw;
-			$ty = $mh;
-			$px = ($mw - $tnw) / 2;
-			$py = ($mh - $tnh) / 2;
+			$tx = intval($mw);
+			$ty = intval($mh);
+			$px = (int) ($mw - $tnw) / 2;
+			$py = (int) ($mh - $tnh) / 2;
 		}
 		else
 		{
-			$tx = $tnw;
-			$ty = $tnh;
+			$tx = intval($tnw);
+			$ty = intval($tnh);
 			$px = 0;
 			$py = 0;
 		}
 
-		$this->temp_image = imagecreatetruecolor($tx,$ty);
+		$this->temp_image = imagecreatetruecolor($tx, $ty);
 
 		// check it
-		if(!is_resource($this->temp_image))
+		if(!$this->_is_gd_image($this->temp_image))
 		{
 			$this->set_error('Unable to create temp image sized '.$tx.' x '.$ty);
 			return $this;
@@ -744,7 +716,7 @@ class Image_l
 		}
 
 		// copy resized
-		imagecopyresampled($this->temp_image, $this->main_image, $px, $py, 0, 0, $tnw, $tnh, $this->width, $this->height);
+		imagecopyresampled($this->temp_image, $this->main_image, intval($px), intval($py), 0, 0, intval($tnw), intval($tnh), intval($this->width), intval($this->height));
 
 		// set sizes
 		$this->_set_new_size();
@@ -768,7 +740,7 @@ class Image_l
 		$this->temp_image = imagecreatetruecolor($mw, $mh);
 
 		// check it
-		if(!is_resource($this->temp_image))
+		if(!$this->_is_gd_image($this->temp_image))
 		{
 			$this->set_error('Unable to create temp image sized '.$mh.' x '.$mw);
 			return $this;
@@ -805,9 +777,9 @@ class Image_l
 		$this->temp_image = imagecreatetruecolor($x2-$x1, $y2-$y1);
 
 		// check it
-		if(!is_resource($this->temp_image))
+		if(!$this->_is_gd_image($this->temp_image))
 		{
-			$this->set_error('Unable to create temp image sized '.$x2-$x1.' x '.$y2-$y1);
+			$this->set_error('Unable to create temp image sized '.($x2-$x1).' x '.($y2-$y1));
 			return $this;
 		}
 
@@ -915,7 +887,7 @@ class Image_l
 		$bl = $bbox[1];
 
 		// use this to create watermark image
-		if(is_resource($this->watermark_image)) imagedestroy($this->watermark_image);
+		if($this->_is_gd_image($this->watermark_image)) imagedestroy($this->watermark_image);
 		$this->watermark_image = imagecreatetruecolor($bw, $bh);
 
 		// set colours
@@ -952,7 +924,7 @@ class Image_l
 		if (!$this->_check_image()) return $this;
 
 		// validate we have a watermark
-		if(!is_resource($this->watermark_image))
+		if(!$this->_is_gd_image($this->watermark_image))
 		{
 			$this->set_error("Can't watermark image, no watermark loaded/created");
 			return $this;
@@ -1176,7 +1148,7 @@ class Image_l
 		$bu_image = imagecreatetruecolor($sx, $sy);
 
 		// check it
-		if(!is_resource($bu_image))
+		if(!$this->_is_gd_image($bu_image))
 		{
 			$this->set_error('Unable to create shadow temp image sized '.$this->width.' x '.$this->height);
 			return FALSE;
@@ -1374,7 +1346,7 @@ class Image_l
 		}
 
 		// is there a temp image?
-		if ( ! is_resource($this->temp_image))
+		if ( ! $this->_is_gd_image($this->temp_image))
 		{
 			$this->new_height = $this->height;
 			$this->new_width = $this->width;

@@ -1,0 +1,110 @@
+/*
+ * Home slider: the slide image fills the whole banner and the text sits on top
+ * of it (the template was made for a small cut-out picture beside the text).
+ * Loaded after responsive.css, whose per-breakpoint offsets it replaces.
+ */
+
+/* slick gives every slide a side margin (meant for the product carousels) */
+.home-slider .slick-slide.slider-bg {
+	margin: 0 !important;
+}
+
+.home-slider .slider-bg {
+	position: relative;
+	height: clamp(240px, 40vw, 560px) !important;
+	overflow: hidden;
+}
+
+.home-slider .hero-slider-content {
+	position: absolute !important;
+	inset: 0 !important;
+	transform: none !important;
+	width: 100% !important;
+	height: 100%;
+	padding: 0 !important;
+}
+
+/* the picture: full width and height of the banner */
+.home-slider .slider-img {
+	position: absolute !important;
+	inset: 0 !important;
+	width: 100% !important;
+	height: 100%;
+	margin: 0 !important;
+	padding: 0 !important;
+	transform: none !important;
+	z-index: 0;
+}
+
+.home-slider .slider-img img {
+	width: 100% !important;
+	height: 100% !important;
+	max-width: none !important;
+	object-fit: cover;
+	object-position: center;
+}
+
+/* the text: a readable panel over the picture, on the reading side */
+/* not positioned: the picture is placed against the whole banner */
+.home-slider .hero-slider-content .container,
+.home-slider .hero-slider-content .row {
+	position: static;
+	height: 100%;
+}
+
+.home-slider .hero-slider-content .row {
+	align-items: center;
+	margin: 0;
+}
+
+.home-slider .slider-content {
+	display: inline-block;
+	max-width: 520px;
+	padding: 1.25rem 1.75rem 1.5rem;
+	border-radius: 12px;
+	background: rgba(255, 255, 255, .85);
+	text-align: start !important;
+	position: relative !important;
+	z-index: 1;
+	transform: none !important;
+}
+
+.home-slider .slider-content:empty {
+	display: none;
+}
+
+.home-slider .slider-content .hero-text:empty {
+	display: none;
+}
+
+.home-slider h1.hero-title {
+	font-size: clamp(1.6rem, 3vw, 2.6rem) !important;
+	line-height: 1.25;
+	white-space: normal;
+	overflow-wrap: anywhere;
+	margin-bottom: .75rem;
+}
+
+.home-slider h2.hero-sub-title {
+	font-size: clamp(1rem, 1.6vw, 1.35rem) !important;
+	margin-bottom: .35rem;
+}
+
+.home-slider .slider-content p.hero-text {
+	margin-bottom: 1rem;
+}
+
+@media (max-width: 767.98px) {
+	.home-slider .slider-content {
+		max-width: 100%;
+		padding: .9rem 1.1rem 1.1rem;
+	}
+
+	.home-slider h1.hero-title {
+		font-size: 1.5rem !important;
+	}
+
+	.home-slider h2.hero-sub-title {
+		font-size: 1rem !important;
+	}
+}

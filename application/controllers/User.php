@@ -5,41 +5,33 @@ if(!defined('BASEPATH')) exit();
 * @file User.php
 * @package hobrtEcom
 * @link hobrt.me
-* @copyright hobrt.me 2018 => 2019
+* @copyright hobrt.me 2018 => 2022
 *
 **/
+
 class User extends CI_Controller
 {
 	
 	public function admin_login()
 	{
-		$data = array();
-		if(isset($_POST['u']))
-		{
-			$u = $this->input->post("u");
-			$p = _hash($this->input->post("p"));
-			$r = $this->m_p->s_a("admins", array("username" => $u, "password" => $p));
-			if(count($r) > 0)
-			{
-				foreach ($r as $key) {
-					$id = $key->id;
-				}
-				$arr = array("id" => $id);
-				$this->session->set_userdata('admin_login',$arr);
-				redirect('admin');
-			}else
-			{
-				$data['msg'] = "البيانات المدخلة غير صحيحة ";
-			}
-		}
-		$this->load->view('admin/login',$data);
+		// with a secret login address (settings) this URL does not exist
+		if (admin_path() !== '')
+			show_404();
+
+		admin_login_page();
 	}
 
+	/** POST only (with the CSRF token), so another site can't log the admin out */
 	public function logout()
 	{
+		if ($this->input->method() !== 'post')
+			redirect(is_login('admin_login') ? 'admin' : 'home');
+
 		$this->session->unset_userdata('admin_login');
-        $this->session->sess_destroy();
-        redirect("home");
+		$this->session->sess_destroy();
+
+		// back to the login page: the secret address when one is set
+		redirect((admin_path() !== '' ? admin_path() : 'user/admin_login') . '?out=1');
 	}
 }
 

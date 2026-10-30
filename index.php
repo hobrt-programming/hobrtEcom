@@ -52,8 +52,22 @@
  *     production
  *
  * NOTE: If you change these, also change the error_reporting() code below
+ *
+ * Defaults to production so live stores never display errors. For local
+ * development set CI_ENV: "SetEnv CI_ENV development" in .htaccess (Apache)
+ * or "fastcgi_param CI_ENV development;" in the PHP location (nginx).
  */
-	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');
+
+/*
+ * Not installed yet (or files of a new release uploaded over an old store):
+ * send visitors to the installer, which also runs upgrades.
+ */
+if (PHP_SAPI !== 'cli' && ! is_file(__DIR__.'/application/config/local.php') && ! getenv('HBECOM_DB_NAME') && is_file(__DIR__.'/install/install.php'))
+{
+	header('Location: '.rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])), '/').'/install/install.php', TRUE, 302);
+	exit;
+}
 
 /*
  *---------------------------------------------------------------
@@ -73,14 +87,7 @@ switch (ENVIRONMENT)
 	case 'testing':
 	case 'production':
 		ini_set('display_errors', 0);
-		if (version_compare(PHP_VERSION, '5.3', '>='))
-		{
-			error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
-		}
-		else
-		{
-			error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
-		}
+		error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
 	break;
 
 	default:
@@ -88,10 +95,6 @@ switch (ENVIRONMENT)
 		echo 'The application environment is not set correctly.';
 		exit(1); // EXIT_ERROR
 }
-
-
-
-	define('template', 'hobrtEcom');
 
 
 /*

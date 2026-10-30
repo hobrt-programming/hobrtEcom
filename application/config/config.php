@@ -23,7 +23,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/nx/';
+// set by the installer in application/config/local.php (or HBECOM_BASE_URL)
+$hb_local = is_file(APPPATH.'config/local.php') ? (include APPPATH.'config/local.php') : array();
+$config['base_url'] = getenv('HBECOM_BASE_URL') ?: ($hb_local['base_url'] ?? '');
 
 /*
 |--------------------------------------------------------------------------
@@ -64,7 +66,7 @@ $config['uri_protocol']	= 'REQUEST_URI';
 |
 | https://codeigniter.com/user_guide/general/urls.html
 */
-$config['url_suffix'] = '.html';
+$config['url_suffix'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -223,7 +225,8 @@ $config['allow_get_array'] = TRUE;
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 0;
+// 1 = errors only, written to application/logs (must be writable by PHP; denied to visitors)
+$config['log_threshold'] = 1;
 
 /*
 |--------------------------------------------------------------------------
@@ -324,7 +327,31 @@ $config['cache_query_string'] = FALSE;
 | https://codeigniter.com/user_guide/libraries/encryption.html
 |
 */
-$config['encryption_key'] = 'zfzfrfreverfrefefFVFEVEFVE121551513lKBBBHHJbVHJJVH';
+/*
+| Per-install secrets live in application/config/secrets.php (git-ignored).
+| The file is generated on the first request if it does not exist. You can
+| also provide the values through the HBECOM_ENCRYPTION_KEY and
+| HBECOM_JWT_SECRET environment variables.
+*/
+$secrets_file = APPPATH.'config/secrets.php';
+if ( ! is_file($secrets_file) && is_writable(dirname($secrets_file)))
+{
+	$generated = array(
+		'encryption_key' => bin2hex(random_bytes(32)),
+		'jwt_secret' => bin2hex(random_bytes(32))
+	);
+	@file_put_contents(
+		$secrets_file,
+		"<?php defined('BASEPATH') OR exit('No direct script access allowed');\nreturn ".var_export($generated, TRUE).";\n",
+		LOCK_EX
+	);
+}
+$secrets = is_file($secrets_file) ? (include $secrets_file) : array();
+
+$config['encryption_key'] = getenv('HBECOM_ENCRYPTION_KEY') ?: ($secrets['encryption_key'] ?? '');
+
+// Secret used to sign the mobile API tokens (api/login). Empty disables the API.
+$config['jwt_secret'] = getenv('HBECOM_JWT_SECRET') ?: ($secrets['jwt_secret'] ?? '');
 
 /*
 |--------------------------------------------------------------------------
@@ -383,7 +410,8 @@ $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = APPPATH."/cache/";
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
-$config['sess_regenerate_destroy'] = FALSE;
+$config['sess_regenerate_destroy'] = TRUE;
+$config['sess_samesite'] = 'Lax';
 
 /*
 |--------------------------------------------------------------------------
@@ -403,8 +431,9 @@ $config['sess_regenerate_destroy'] = FALSE;
 $config['cookie_prefix']	= '';
 $config['cookie_domain']	= '';
 $config['cookie_path']		= '/';
-$config['cookie_secure']	= FALSE;
-$config['cookie_httponly'] 	= FALSE;
+$config['cookie_secure']	= ( ! empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off');
+$config['cookie_httponly'] 	= TRUE;
+$config['cookie_samesite'] 	= 'Lax';
 
 /*
 |--------------------------------------------------------------------------
@@ -432,7 +461,7 @@ $config['standardize_newlines'] = FALSE;
 |          for backwards compatibility purposes!
 |
 */
-$config['global_xss_filtering'] = FALSE;
+$config['global_xss_filtering'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
@@ -448,12 +477,15 @@ $config['global_xss_filtering'] = FALSE;
 | 'csrf_regenerate' = Regenerate token on every submission
 | 'csrf_exclude_uris' = Array of URIs which ignore CSRF checks
 */
-$config['csrf_protection'] = FALSE;
+$config['csrf_protection'] = TRUE;
 $config['csrf_token_name'] = 'csrf_test_name';
 $config['csrf_cookie_name'] = 'csrf_cookie_name';
 $config['csrf_expire'] = 7200;
-$config['csrf_regenerate'] = TRUE;
-$config['csrf_exclude_uris'] = array();
+// FALSE so the admin panel can send several AJAX requests with the same token
+$config['csrf_regenerate'] = FALSE;
+// CSRF is enforced on the admin panel and the login form (admin/*, user/*).
+// Store pages are excluded so custom front themes keep working unchanged.
+$config['csrf_exclude_uris'] = array('(?!(admin|user)(/|$)).*');
 
 /*
 |--------------------------------------------------------------------------
@@ -523,4 +555,4 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
 
-$config['per_page'] = 10;
+$config['per_page'] = 4;

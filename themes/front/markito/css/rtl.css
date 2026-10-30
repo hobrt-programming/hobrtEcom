@@ -1,0 +1,28 @@
+/* Right-to-left (Arabic) store: mirror the slick arrows. style.css pins them
+   to left/right and slick-theme.css swaps their glyphs under [dir=rtl]. */
+[dir="rtl"] button.slick-prev.slick-arrow { left: auto; right: 0; }
+[dir="rtl"] button.slick-next.slick-arrow { right: auto; left: 0; }
+
+[dir="rtl"] button.slick-prev.slick-arrow:before,
+[dir="rtl"] button.slick-next.slick-arrow:before {
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+	padding: 0;
+}
+[dir="rtl"] button.slick-prev.slick-arrow:before { content: "\f054"; }  /* chevron-right */
+[dir="rtl"] button.slick-next.slick-arrow:before { content: "\f053"; }  /* chevron-left */
+
+@media (max-width: 450px) {
+	[dir="rtl"] button.slick-prev.slick-arrow { left: auto !important; right: 20px !important; }
+	[dir="rtl"] button.slick-next.slick-arrow { right: auto !important; left: 20px !important; }
+}
+
+/* lightGallery (product image zoom) is appended to <body> and only works left-to-right */
+[dir="rtl"] .lg-outer, [dir="rtl"] .lg-backdrop { direction: ltr; }
+
+/* header "categories" dropdown reads right-to-left */
+[dir="rtl"] .navbar-light .navbar-nav .nav-item .dropdown {
+	text-align: right;
+	padding: 10px 15px 10px 0;
+	min-width: 190px;
+}

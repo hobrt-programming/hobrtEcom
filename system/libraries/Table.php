@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2018, British Columbia Institute of Technology
+ * Copyright (c) 2019 - 2022, CodeIgniter Foundation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,9 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @copyright	Copyright (c) 2019 - 2022, CodeIgniter Foundation (https://codeigniter.com/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.3.1
  * @filesource
@@ -46,7 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Libraries
  * @category	HTML Tables
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/libraries/table.html
+ * @link		https://codeigniter.com/userguide3/libraries/table.html
  */
 class CI_Table {
 
@@ -427,6 +428,7 @@ class CI_Table {
 		$this->rows = array();
 		$this->heading = array();
 		$this->auto_heading = TRUE;
+		$this->caption = NULL;
 		return $this;
 	}
 
@@ -488,12 +490,12 @@ class CI_Table {
 			return;
 		}
 
-		$this->temp = $this->_default_template();
+		$temp = $this->_default_template();
 		foreach (array('table_open', 'thead_open', 'thead_close', 'heading_row_start', 'heading_row_end', 'heading_cell_start', 'heading_cell_end', 'tbody_open', 'tbody_close', 'row_start', 'row_end', 'cell_start', 'cell_end', 'row_alt_start', 'row_alt_end', 'cell_alt_start', 'cell_alt_end', 'table_close') as $val)
 		{
 			if ( ! isset($this->template[$val]))
 			{
-				$this->template[$val] = $this->temp[$val];
+				$this->template[$val] = $temp[$val];
 			}
 		}
 	}

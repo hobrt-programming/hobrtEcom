@@ -1,0 +1,13 @@
+.img-zoom {
+    overflow: hidden; 
+    border-radius: 10px;
+  }
+  
+  .img-zoom img {
+    transition: transform .5s ease;
+  }
+  
+  .img-zoom:hover img {
+    transform: scale(1.5);
+  }
+  

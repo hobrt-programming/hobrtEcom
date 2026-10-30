@@ -1,0 +1,17 @@
+# Uploaded files are data, never code: block script execution in this folder
+<FilesMatch "\.(?i:php\d*|phtml|phar|pl|py|cgi|sh|shtml|htaccess)$">
+	<IfModule authz_core_module>
+		Require all denied
+	</IfModule>
+	<IfModule !authz_core_module>
+		Deny from all
+	</IfModule>
+</FilesMatch>
+<IfModule mod_php.c>
+	php_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+	php_flag engine off
+</IfModule>
+Options -Indexes -ExecCGI
+RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8 .phar

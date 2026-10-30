@@ -1,0 +1,265 @@
+/*
+ * Admin panel polish on top of SB Admin 2 (loaded last). Logical properties
+ * (inline-start/end) keep it correct for the Arabic (rtl) admin too.
+ */
+
+:root {
+	--hb-text: #1f2937;
+	--hb-muted: #6b7280;
+	--hb-border: #e7eaf0;
+	--hb-soft: #f7f8fb;
+	--hb-primary: #4e73df;
+}
+
+body#page-top,
+#content-wrapper {
+	background: #f4f6fa !important;
+}
+
+/* ---- page titles: plain heading instead of a coloured block ---- */
+#content h1.h3 {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: .6rem;
+	margin: 1.5rem 0 1.25rem !important;
+	font-size: 1.45rem;
+	font-weight: 700;
+	color: var(--hb-text) !important;
+}
+
+#content h1.h3 > span.rounded,
+#content h1.h3.page-title > span:first-child {
+	background: none !important;
+	color: var(--hb-text) !important;
+	padding: 0 !important;
+}
+
+#content h1.h3 > span i {
+	color: var(--hb-primary);
+	margin-inline-end: .35rem;
+	font-size: .95em;
+}
+
+.status-badge {
+	font-size: .72rem;
+	font-weight: 600;
+	padding: .4em .8em;
+	letter-spacing: .02em;
+}
+
+h1 .status-badge {
+	font-size: .8rem;
+}
+
+/* ---- top bar ---- */
+.topbar {
+	height: 3.75rem;
+	box-shadow: 0 1px 0 var(--hb-border) !important;
+}
+
+.topbar .form-inline .form-group {
+	margin-bottom: 0 !important;
+}
+
+.topbar label .badge {
+	background: none;
+	color: var(--hb-muted);
+	font-size: .8rem;
+	font-weight: 600;
+	padding: 0;
+}
+
+.topbar #languageSelect {
+	height: 2.1rem;
+	font-size: .85rem;
+	border-radius: .5rem;
+	padding-inline: .6rem 1.8rem;
+	border-color: var(--hb-border);
+}
+
+/* ---- sidebar ---- */
+.sidebar .nav-item .nav-link {
+	padding-block: .7rem;
+	border-inline-start: 3px solid transparent;
+}
+
+.sidebar .nav-item .nav-link span {
+	font-size: .88rem;
+}
+
+.sidebar .nav-item .nav-link:hover {
+	background: rgba(255, 255, 255, .08);
+}
+
+.sidebar .nav-item.active > .nav-link {
+	background: rgba(255, 255, 255, .14);
+	border-inline-start-color: #fff;
+	font-weight: 700;
+}
+
+.sidebar .collapse-inner .collapse-item.active {
+	background: #eef2fd;
+	color: var(--hb-primary);
+	font-weight: 700;
+}
+
+.sidebar .sidebar-brand {
+	height: 3.75rem;
+}
+
+/* ---- cards ---- */
+.card {
+	border: 1px solid var(--hb-border);
+	border-radius: .75rem;
+	box-shadow: 0 1px 2px rgba(16, 24, 40, .05) !important;
+}
+
+.card-header {
+	background: #fff;
+	border-bottom: 1px solid var(--hb-border);
+	border-radius: .75rem .75rem 0 0 !important;
+}
+
+.card-header h6,
+.card-header > p,
+.card-header .text-primary,
+.card-header .text-warning {
+	color: var(--hb-text) !important;
+	font-size: .95rem;
+}
+
+.card .border-left-primary,
+.card .border-left-success,
+.card .border-left-info,
+.card .border-left-warning {
+	border-radius: .6rem;
+}
+
+/* ---- tables ---- */
+.table {
+	color: #374151;
+}
+
+.table-bordered,
+.table-bordered td,
+.table-bordered th {
+	border-color: var(--hb-border) !important;
+}
+
+.table thead th {
+	background: var(--hb-soft);
+	color: var(--hb-muted);
+	font-size: .78rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: .03em;
+	border-bottom-width: 1px !important;
+	white-space: nowrap;
+}
+
+.table td {
+	vertical-align: middle;
+}
+
+.table tbody tr:hover {
+	background: #f9fbff;
+}
+
+/* DataTables repeats the header below the table */
+table.dataTable tfoot,
+#dataTable tfoot {
+	display: none;
+}
+
+/* action buttons stay on one line */
+.table td:last-child {
+	white-space: nowrap;
+}
+
+.table td:last-child .btn-circle,
+.table td:last-child .btn {
+	margin: 1px;
+}
+
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+	border-radius: .5rem;
+	border-color: var(--hb-border);
+}
+
+/* ---- forms ---- */
+.form-control {
+	border-color: #dfe3ea;
+	border-radius: .5rem;
+}
+
+.form-control:focus {
+	border-color: #a5b8f3;
+	box-shadow: 0 0 0 .2rem rgba(78, 115, 223, .15);
+}
+
+label {
+	font-weight: 600;
+	font-size: .85rem;
+	color: #4b5563;
+}
+
+.btn {
+	border-radius: .5rem;
+}
+
+.btn-circle {
+	border-radius: 100% !important;
+}
+
+/* ---- order details: compact label / value list ---- */
+.order-info > .bg-gray-100 {
+	background: none !important;
+	margin: 0 !important;
+	padding: .7rem 0 !important;
+	border-bottom: 1px solid var(--hb-border);
+}
+
+.order-info > .bg-gray-100:last-child {
+	border-bottom: 0;
+}
+
+.order-info .list-inline {
+	display: flex;
+	align-items: center;
+}
+
+.order-info .list-inline-item:first-child {
+	min-width: 8rem;
+	color: var(--hb-muted);
+	font-size: .85rem;
+}
+
+.order-info .list-inline-item:nth-child(2) {
+	display: none;
+}
+
+.order-info .list-inline-item:last-child {
+	font-weight: 600;
+	color: var(--hb-text);
+}
+
+@media (max-width: 575.98px) {
+	.topbar #languageSelect {
+		min-width: 6.5rem;
+	}
+
+	#content h1.h3 {
+		font-size: 1.2rem;
+	}
+
+	.order-info .list-inline-item:first-child {
+		min-width: 5.5rem;
+	}
+
+	.order-info .list-inline-item:last-child {
+		min-width: 0;
+		overflow-wrap: anywhere;
+	}
+}

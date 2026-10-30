@@ -1,4 +1,12 @@
 RewriteEngine On
+
+# Never serve dot files/folders (.git, .env, .vscode ...)
+RewriteRule (^|/)\.(?!well-known/) - [F,L]
+
+# Block database dumps, archives, logs and dependency manifests
+RewriteRule \.(sql|zip|tar|gz|bak|log|lock|tmp)$ - [F,L,NC]
+RewriteRule (^|/)composer\.json$ - [F,L,NC]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php/$1 [L]

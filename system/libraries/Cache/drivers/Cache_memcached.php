@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2018, British Columbia Institute of Technology
+ * Copyright (c) 2019 - 2022, CodeIgniter Foundation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,9 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @copyright	Copyright (c) 2019 - 2022, CodeIgniter Foundation (https://codeigniter.com/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 2.0
  * @filesource
@@ -102,10 +103,22 @@ class CI_Cache_memcached extends CI_Driver {
 			return;
 		}
 
-		foreach ($this->_config as $cache_server)
+		foreach ($this->_config as $cache_name => $cache_server)
 		{
-			isset($cache_server['hostname']) OR $cache_server['hostname'] = $defaults['host'];
-			isset($cache_server['port']) OR $cache_server['port'] = $defaults['port'];
+			if ( ! isset($cache_server['hostname']))
+			{
+				log_message('debug', 'Cache: Memcache(d) configuration "'.$cache_name.'" doesn\'t include a hostname; ignoring.');
+				continue;
+			}
+			elseif ($cache_server['hostname'][0] === '/')
+			{
+				$cache_server['port'] = 0;
+			}
+			elseif (empty($cache_server['port']))
+			{
+				$cache_server['port'] = $defaults['port'];
+			}
+
 			isset($cache_server['weight']) OR $cache_server['weight'] = $defaults['weight'];
 
 			if ($this->_memcached instanceof Memcache)

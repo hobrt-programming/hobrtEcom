@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2018, British Columbia Institute of Technology
+ * Copyright (c) 2019 - 2022, CodeIgniter Foundation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,9 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @copyright	Copyright (c) 2019 - 2022, CodeIgniter Foundation (https://codeigniter.com/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 3.0.0
  * @filesource
@@ -48,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Drivers
  * @category	Database
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/database/
+ * @link		https://codeigniter.com/userguide3/database/
  */
 class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver {
 
@@ -142,30 +143,66 @@ class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver {
 
 			if ( ! empty($sql))
 			{
-				if (empty($this->options[PDO::MYSQL_ATTR_INIT_COMMAND]))
+				if (class_exists('Pdo\\Mysql'))
 				{
-					$this->options[PDO::MYSQL_ATTR_INIT_COMMAND] = 'SET SESSION sql_mode = '.$sql;
+					$constant = constant('Pdo\\Mysql::ATTR_INIT_COMMAND');
+				} else {
+					$constant = PDO::MYSQL_ATTR_INIT_COMMAND;
+				}
+
+				if (empty($this->options[$constant]))
+				{
+					$this->options[$constant] = 'SET SESSION sql_mode = '.$sql;
 				}
 				else
 				{
-					$this->options[PDO::MYSQL_ATTR_INIT_COMMAND] .= ', @@session.sql_mode = '.$sql;
+					$this->options[$constant] .= ', @@session.sql_mode = '.$sql;
 				}
 			}
 		}
 
 		if ($this->compress === TRUE)
 		{
-			$this->options[PDO::MYSQL_ATTR_COMPRESS] = TRUE;
+			if (class_exists('Pdo\\Mysql'))
+			{
+				$constant = constant('Pdo\\Mysql::ATTR_COMPRESS');
+			} else {
+				$constant = PDO::MYSQL_ATTR_COMPRESS;
+			}
+
+			$this->options[$constant] = TRUE;
 		}
 
 		if (is_array($this->encrypt))
 		{
+			if (class_exists('Pdo\\Mysql'))
+			{
+				$sslKey = constant('Pdo\\Mysql::ATTR_SSL_KEY');
+				$sslCert = constant('Pdo\\Mysql::ATTR_SSL_CERT');
+				$sslCA = constant('Pdo\\Mysql::ATTR_SSL_CA');
+				$sslCAPath = constant('Pdo\\Mysql::ATTR_SSL_CAPATH');
+				$sslCipher = constant('Pdo\\Mysql::ATTR_SSL_CIPHER');
+				$verify = constant('Pdo\\Mysql::ATTR_SSL_VERIFY_SERVER_CERT');
+			} else {
+				$sslKey = PDO::MYSQL_ATTR_SSL_KEY;
+				$sslCert = PDO::MYSQL_ATTR_SSL_CERT;
+				$sslCA = PDO::MYSQL_ATTR_SSL_CA;
+				$sslCAPath = PDO::MYSQL_ATTR_SSL_CAPATH;
+				$sslCipher = PDO::MYSQL_ATTR_SSL_CIPHER;
+				$verify = defined('PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT') ? PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT : null;
+			}
+
 			$ssl = array();
-			empty($this->encrypt['ssl_key'])    OR $ssl[PDO::MYSQL_ATTR_SSL_KEY]    = $this->encrypt['ssl_key'];
-			empty($this->encrypt['ssl_cert'])   OR $ssl[PDO::MYSQL_ATTR_SSL_CERT]   = $this->encrypt['ssl_cert'];
-			empty($this->encrypt['ssl_ca'])     OR $ssl[PDO::MYSQL_ATTR_SSL_CA]     = $this->encrypt['ssl_ca'];
-			empty($this->encrypt['ssl_capath']) OR $ssl[PDO::MYSQL_ATTR_SSL_CAPATH] = $this->encrypt['ssl_capath'];
-			empty($this->encrypt['ssl_cipher']) OR $ssl[PDO::MYSQL_ATTR_SSL_CIPHER] = $this->encrypt['ssl_cipher'];
+			empty($this->encrypt['ssl_key'])    OR $ssl[$sslKey]    = $this->encrypt['ssl_key'];
+			empty($this->encrypt['ssl_cert'])   OR $ssl[$sslCert]   = $this->encrypt['ssl_cert'];
+			empty($this->encrypt['ssl_ca'])     OR $ssl[$sslCA]     = $this->encrypt['ssl_ca'];
+			empty($this->encrypt['ssl_capath']) OR $ssl[$sslCAPath] = $this->encrypt['ssl_capath'];
+			empty($this->encrypt['ssl_cipher']) OR $ssl[$sslCipher] = $this->encrypt['ssl_cipher'];
+
+			if ($verify && isset($this->encrypt['ssl_verify']))
+			{
+				$ssl[$verify] = $this->encrypt['ssl_verify'];
+			}
 
 			// DO NOT use array_merge() here!
 			// It re-indexes numeric keys and the PDO_MYSQL_ATTR_SSL_* constants are integers.
@@ -274,7 +311,7 @@ class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver {
 	 */
 	protected function _list_tables($prefix_limit = FALSE)
 	{
-		$sql = 'SHOW TABLES';
+		$sql = 'SHOW TABLES FROM '.$this->_escape_char.$this->database.$this->_escape_char;
 
 		if ($prefix_limit === TRUE && $this->dbprefix !== '')
 		{

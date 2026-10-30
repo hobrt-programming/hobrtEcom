@@ -1,0 +1,28 @@
+.lx-mb-0{
+	margin-bottom:0px;
+}
+.lx-p-0{
+	padding:0px;
+}
+.lx-b-0{
+	border:0px;
+}
+.lx-hide{
+	display:none;
+}
+.lx-mobile{
+	display:none;
+}
+@media(max-width:768px){
+	.lx-desktop{
+		display:none;
+	}
+	.lx-mobile{
+		display:block;
+	}
+}
+@media(max-width:767px){
+	.lx-p-mob-0{
+		padding:0px;
+	}
+}

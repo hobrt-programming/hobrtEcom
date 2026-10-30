@@ -1,0 +1,10 @@
+# Theme files are CodeIgniter views: index.php loads them, they are never run by URL.
+# (The template editor makes themes/front writable, so this matters.)
+<FilesMatch "\.(?i:php\d*|phtml|phar)$">
+	<IfModule authz_core_module>
+		Require all denied
+	</IfModule>
+	<IfModule !authz_core_module>
+		Deny from all
+	</IfModule>
+</FilesMatch>

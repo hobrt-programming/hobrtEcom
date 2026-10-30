@@ -1,0 +1,96 @@
+/* Remove borders from cards */
+.card {
+    border: none;
+  }
+  
+  /* Style for product containers */
+  .product {
+    background-color: #eee;
+  }
+  
+  /* Style for brand text */
+  .brand {
+    font-size: 13px;
+  }
+  
+  /* Style for active price with red color and bold */
+  .act-price {
+    color: red;
+    font-weight: 700;
+  }
+  
+  /* Style for discounted price with line-through */
+  .dis-price {
+    text-decoration: line-through;
+  }
+  
+  /* Style for additional product information */
+  .about {
+    font-size: 14px;
+  }
+  
+  /* Style for color section with margin-bottom */
+  .color {
+    margin-bottom: 10px;
+  }
+  
+  /* Style for radio button labels */
+  label.radio {
+    cursor: pointer;
+  }
+  
+  /* Style for radio input, making it invisible */
+  label.radio input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  
+  /* Style for custom radio button */
+  label.radio span {
+    padding: 2px 9px;
+    border: 2px solid #ff0000;
+    display: inline-block;
+    color: #ff0000;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+  
+  /* Style for checked custom radio button */
+  label.radio input:checked + span {
+    border-color: #ff0000;
+    background-color: #ff0000;
+    color: #fff;
+  }
+  
+  /* Style for danger button with important overrides */
+  .btn-danger {
+    background-color: #ff0000 !important;
+    border-color: #ff0000 !important;
+  }
+  
+  /* Hover state for danger button with important overrides */
+  .btn-danger:hover {
+    background-color: #da0606 !important;
+    border-color: #da0606 !important;
+  }
+  
+  /* Remove box-shadow from focused danger button */
+  .btn-danger:focus {
+    box-shadow: none;
+  }
+  
+  /* Style for cart icon with margin-right */
+  .cart i {
+    margin-right: 10px;
+  }
+  .btn-danger-light {
+    background-color: #fa9e2fa3 !important;
+    border-color: #fa9e2f91 !important;
+  }
+  .btn-danger-light:hover {
+    background-color: #fa9e2fc9 !important;
+    border-color: #fa9e2fc7 !important;
+  }

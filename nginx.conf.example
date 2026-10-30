@@ -1,0 +1,43 @@
+# nginx equivalent of the .htaccess files, for the store served at /hbecom/.
+# nginx ignores .htaccess, so without this block private files are downloadable.
+#
+# Install (Fedora): copy into a file included inside your `server { }` block, e.g.
+#   sudo cp nginx.conf.example /etc/nginx/default.d/hbecom.conf
+#   sudo nginx -t && sudo systemctl reload nginx
+#
+# Installed at the domain root instead of /hbecom/? Replace "/hbecom/" with "/" below.
+
+location ^~ /hbecom/ {
+	# LimitRequestBody 102400000
+	client_max_body_size 100M;
+	autoindex off;
+
+	# Never serve dot files/folders (.git, .env, .vscode ...)
+	location ~ /\.(?!well-known/) { deny all; }
+
+	# Application code and framework (application/.htaccess, system/.htaccess)
+	location ~ ^/hbecom/(application|system)/ { deny all; }
+
+	# Database dumps, archives, logs and dependency manifests
+	location ~* \.(sql|zip|tar|gz|bak|log|lock|tmp)$ { deny all; }
+	location ~* /composer\.json$ { deny all; }
+
+	# Uploaded files are data, never code (uploads/.htaccess, images/.htaccess)
+	location ~* ^/hbecom/(uploads|images)/.*\.(php\d*|phtml|phar|pl|py|cgi|sh|shtml|htaccess)$ { deny all; }
+
+	# Theme files are views loaded by index.php, never run by URL (themes/front is writable for the editor)
+	location ~* ^/hbecom/themes/.*\.(php\d*|phtml|phar)$ { deny all; }
+
+	location ~ \.php$ {
+		# routes like admin/template_editor/article.php are not files: front controller
+		try_files $uri /hbecom/index.php$is_args$args;
+		include fastcgi_params;
+		fastcgi_pass unix:/var/opt/remi/php84/run/php-fpm/www.sock;
+		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+		# the admin AI assistant waits for the model's answer (default is 60s)
+		fastcgi_read_timeout 300s;
+	}
+
+	# Front controller: everything that is not a real file goes to index.php
+	try_files $uri $uri/ /hbecom/index.php$is_args$args;
+}
