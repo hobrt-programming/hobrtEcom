@@ -1,0 +1,60 @@
+# Every push to master publishes a GitHub Release with a ready-to-upload ZIP:
+# the store files plus application/vendor, so hosts without Composer can install it.
+name: Release
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    # only the public repo publishes releases
+    if: github.repository == 'hobrt-programming/hobrtEcom'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: gd, intl, curl, mbstring, pdo_mysql
+          tools: composer:v2
+          coverage: none
+
+      - name: Build the store files
+        run: |
+          mkdir build
+          # committed files only, without the ones marked export-ignore in .gitattributes
+          git archive HEAD | tar -x -C build
+          composer install --working-dir=build/application --no-dev --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Zip
+        id: zip
+        run: |
+          version="v$(date -u +%Y.%m.%d).${GITHUB_RUN_NUMBER}"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          # files at the root of the ZIP: extract it straight into the web root
+          (cd build && zip -qr9 "../hobrtEcom-$version.zip" .)
+          ls -lh "hobrtEcom-$version.zip"
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.zip.outputs.version }}
+        run: |
+          {
+            git log -1 --format=%B | grep -v '^Co-Authored-By:'
+            echo
+            echo '### Install'
+            echo 'Download **hobrtEcom-'"$VERSION"'.zip**, extract it into your web root (or a sub folder) and open `yourdomain.com/install/install.php`. `application/vendor` is included, no Composer needed.'
+          } > notes.md
+          gh release create "$VERSION" "hobrtEcom-$VERSION.zip" \
+            --target "$GITHUB_SHA" --title "hobrtEcom $VERSION" --notes-file notes.md --latest

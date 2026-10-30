@@ -1,0 +1,6 @@
+# left out of the release ZIP (git archive)
+.github export-ignore
+.vscode export-ignore
+.gitattributes export-ignore
+*.sql export-ignore
+r.out export-ignore

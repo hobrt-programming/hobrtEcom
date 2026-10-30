@@ -10,7 +10,7 @@ hobrt eCommerce script
 ## Install a new store
 
 1. Create an empty database and a database user in your hosting panel.
-2. Run `composer install` inside the `application` folder (or upload a release that already contains `application/vendor`).
+2. Download the ZIP of the [latest release](https://github.com/hobrt-programming/hobrtEcom/releases/latest): it already contains `application/vendor`. From a git clone instead, run `composer install` inside the `application` folder.
 3. Upload all files to your web root or to a sub folder.
 4. Open `yourdomain.com/install/install.php` (any page of the store redirects there until it is installed).
 5. Fix anything the requirements list shows in red. The folders `application/config`, `application/cache`, `application/logs`, `uploads` and `images` must be writable by PHP (755 is usually enough, never use 777).
