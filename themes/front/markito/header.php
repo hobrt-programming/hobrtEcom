@@ -41,6 +41,10 @@ $page_image = isset($product) && $product->images ? base_url("uploads/" . add_th
 $late_css = function ($href, $attrs = '') {
 	return '<link rel="preload" as="style" href="' . $href . '"' . $attrs . ' onload="this.onload=null;this.rel=\'stylesheet\'"><noscript><link rel="stylesheet" href="' . $href . '"' . $attrs . '></noscript>';
 };
+// puts a small theme stylesheet in the page: one request less before the first paint (urls are made relative to the theme folder, the page's base)
+$inline_css = function ($file) {
+	return '<style>' . str_replace("url('../", "url('", file_get_contents(__DIR__ . "/" . $file)) . '</style>';
+};
 ?>
 <!DOCTYPE html>
 <html lang="<?= lang("lang_h40") ?>" dir="<?= $rtl ? "rtl" : "ltr" ?>">
@@ -58,12 +62,11 @@ $late_css = function ($href, $attrs = '') {
 
 	<!-- Bootstrap 4.5.3 and slick 1.8.1 are served from the theme: no extra connections before the first paint -->
 	<link rel="stylesheet" href="css/<?= $rtl ? "bootstrap-rtl.min.css" : "bootstrap.min.css" ?>">
-	<!--fontawesome 5-->
-	<link rel="stylesheet" href="css/all.min.css?v=<?= filemtime(__DIR__ . "/css/all.min.css") ?>">
 	<!--slickslider.css-->
-	<link rel="stylesheet" href="css/slick.min.css">
-	<link rel="stylesheet" href="css/slick-theme.css?v=<?= filemtime(__DIR__ . "/css/slick-theme.css") ?>">
-	<!-- animations, mobile menu, lightbox and icon font: not needed for the first paint -->
+	<?= $inline_css("css/slick.min.css") ?>
+	<?= $inline_css("css/slick-theme.css") ?>
+	<!-- animations, mobile menu, lightbox and icon fonts (fontawesome 5, flaticon): not needed for the first paint -->
+	<?= $late_css("css/all.min.css?v=" . filemtime(__DIR__ . "/css/all.min.css")) ?>
 	<?= $late_css("css/animate.min.css") ?>
 	<?= $late_css("css/slicknav.min.css") ?>
 	<?= $late_css("css/lity.min.css") ?>
@@ -72,9 +75,9 @@ $late_css = function ($href, $attrs = '') {
 	<link rel="shortcut icon" href="images/fav-icon.png" type="image/x-icon">
 	<!-- Custom.css -->
 	<link rel="stylesheet" href="css/style.css?v=<?= filemtime(__DIR__ . "/css/style.css") ?>">
-	<link rel="stylesheet" href="css/responsive.css?v=<?= filemtime(__DIR__ . "/css/responsive.css") ?>">
-	<link rel="stylesheet" href="css/hero.css?v=<?= filemtime(__DIR__ . "/css/hero.css") ?>">
-	<?php if ($rtl) : ?><link rel="stylesheet" href="css/rtl.css?v=<?= filemtime(__DIR__ . "/css/rtl.css") ?>"><?php endif; ?>
+	<?= $inline_css("css/responsive.css") ?>
+	<?= $inline_css("css/hero.css") ?>
+	<?php if ($rtl) : ?><?= $inline_css("css/rtl.css") ?><?php endif; ?>
 
 
 	<script type="text/javascript">
